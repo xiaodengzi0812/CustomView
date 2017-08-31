@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="item_line_color">#CCCCCC</color>
+    <color name="inner_color">#3F51B5</color>
+    <color name="item_text_color">#333333</color>
+</resources>

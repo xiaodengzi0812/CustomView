@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="custom_item">
+        <attr name="itemLeftText" format="string" />
+        <attr name="itemLeftTextColor" format="color" />
+        <attr name="itemLeftTextSize" format="dimension" />
+        <attr name="itemLeftDrawable" format="reference" />
+        <attr name="itemLeftDrawablePadding" format="dimension" />
+
+        <attr name="itemRightText" format="string" />
+        <attr name="itemRightTextColor" format="color" />
+        <attr name="itemRightTextSize" format="dimension" />
+        <attr name="itemRightDrawable" format="reference" />
+        <attr name="itemRightDrawablePadding" format="dimension" />
+
+        <attr name="itemTopLineHeight" format="dimension" />
+        <attr name="itemTopLinePaddingLeft" format="dimension" />
+        <attr name="itemTopLinePaddingRight" format="dimension" />
+        <attr name="itemTopLineColor" format="color" />
+
+        <attr name="itemBottomLineHeight" format="dimension" />
+        <attr name="itemBottomLinePaddingLeft" format="dimension" />
+        <attr name="itemBottomLinePaddingRight" format="dimension" />
+        <attr name="itemBottomLineColor" format="color" />
+    </declare-styleable>
+
+</resources>
