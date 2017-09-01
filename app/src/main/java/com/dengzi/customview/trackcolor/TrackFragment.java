@@ -12,7 +12,7 @@ import com.dengzi.customview.R;
 
 /**
  * @author Djk
- * @Title:
+ * @Title: 单纯展示一个文字
  * @Time: 2017/8/31.
  * @Version:1.0.0
  */

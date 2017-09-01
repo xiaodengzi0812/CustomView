@@ -8,11 +8,10 @@ import java.util.ArrayList;
 
 /**
  * @author Djk
- * @Title:
+ * @Title: ViewPager的adapter
  * @Time: 2017/8/31.
  * @Version:1.0.0
  */
-
 public class TrackAdapter extends FragmentPagerAdapter {
     private ArrayList<TrackFragment> fragments = new ArrayList<>();
     int length;

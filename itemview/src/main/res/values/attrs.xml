@@ -25,4 +25,37 @@
         <attr name="itemBottomLineColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="custom_top_item">
+        <attr name="topLeftText" format="string" />
+        <attr name="topLeftTextColor" format="color" />
+        <attr name="topLeftTextSize" format="dimension" />
+        <attr name="topLeftDrawable" format="reference" />
+        <attr name="topLeftDrawablePadding" format="dimension" />
+
+        <attr name="topMiddleText" format="string" />
+        <attr name="topMiddleTextColor" format="color" />
+        <attr name="topMiddleTextSize" format="dimension" />
+        <attr name="topMiddleDrawable" format="reference" />
+        <attr name="topMiddleDrawablePadding" format="dimension" />
+
+        <attr name="topRightText" format="string" />
+        <attr name="topRightTextColor" format="color" />
+        <attr name="topRightTextSize" format="dimension" />
+        <attr name="topRightDrawable" format="reference" />
+        <attr name="topRightDrawablePadding" format="dimension" />
+
+        <attr name="topRight2Text" format="string" />
+        <attr name="topRight2TextColor" format="color" />
+        <attr name="topRight2TextSize" format="dimension" />
+        <attr name="topRight2Drawable" format="reference" />
+        <attr name="topRight2DrawablePadding" format="dimension" />
+
+        <attr name="topRightRight2Padding" format="dimension" />
+
+        <attr name="topBottomLineHeight" format="dimension" />
+        <attr name="topBottomLinePaddingLeft" format="dimension" />
+        <attr name="topBottomLinePaddingRight" format="dimension" />
+        <attr name="topBottomLineColor" format="color" />
+    </declare-styleable>
+
 </resources>

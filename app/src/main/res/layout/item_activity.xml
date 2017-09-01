@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    tools:context="com.dengzi.customview.MainActivity">
+
+
+    <com.dengzi.itemview.ItemView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        custom:itemBottomLineColor="#330022"
+        custom:itemBottomLineHeight="2dp"
+        custom:itemBottomLinePaddingLeft="30dp"
+        custom:itemBottomLinePaddingRight="10dp"
+        custom:itemLeftDrawable="@drawable/left"
+
+        custom:itemLeftDrawablePadding="10dp"
+        custom:itemLeftText="关于我们"
+        custom:itemLeftTextColor="#ff0000"
+        custom:itemLeftTextSize="16sp"
+        custom:itemRightDrawable="@drawable/right"
+
+        custom:itemRightDrawablePadding="10dp"
+        custom:itemRightText="V1.0.0"
+        custom:itemRightTextColor="#3322ff"
+        custom:itemRightTextSize="14sp"
+
+        custom:itemTopLineColor="#ff00ff"
+        custom:itemTopLineHeight="2dp"
+        custom:itemTopLinePaddingLeft="10dp"
+        custom:itemTopLinePaddingRight="30dp" />
+
+
+    <com.dengzi.itemview.TopView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        custom:topBottomLineColor="#000000"
+        custom:topBottomLineHeight="2dp"
+        custom:topBottomLinePaddingLeft="10dp"
+        custom:topBottomLinePaddingRight="10dp"
+
+        custom:topLeftDrawable="@drawable/back"
+
+        custom:topMiddleText="关于我们"
+        custom:topMiddleTextColor="#0000ff"
+        custom:topMiddleTextSize="18sp"
+
+        custom:topRight2Drawable="@drawable/share"
+        custom:topRightDrawable="@drawable/user" />
+
+    <!--
+        custom:topLeftDrawablePadding="10dp"
+        custom:topLeftTextColor="#ff0000"
+        custom:topLeftTextSize="16sp"
+        custom:topLeftText="关于我们"
+
+        custom:topMiddleDrawable="@drawable/left"
+        custom:topMiddleDrawablePadding="10dp"
+
+        custom:topRightDrawablePadding="10dp"
+        custom:topRightText="V1"
+        custom:topRightTextColor="#ff22ff"
+        custom:topRightTextSize="18sp"
+
+        custom:topRight2DrawablePadding="10dp"
+        custom:topRight2Text="V1.0"
+        custom:topRight2TextColor="#ff0000"
+        custom:topRight2TextSize="14sp"
+
+         custom:topRightRight2Padding="30dp"
+
+    -->
+
+</LinearLayout>
