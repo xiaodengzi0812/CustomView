@@ -59,6 +59,7 @@ public class TrackColorTextView extends TextView {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.custom_track);
             defaultColor = typedArray.getColor(R.styleable.custom_track_defaultColor, getCurrentTextColor());
             trackColor = typedArray.getColor(R.styleable.custom_track_trackColor, getCurrentTextColor());
+            typedArray.recycle();
         }
         mDefaultPaint = getPaint(defaultColor);
         mTrackPaint = getPaint(trackColor);

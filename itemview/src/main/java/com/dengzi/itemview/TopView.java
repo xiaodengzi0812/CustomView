@@ -105,6 +105,7 @@ public class TopView extends View {
             mBottomLineColor = typedArray.getColor(R.styleable.custom_top_item_topBottomLineColor, getResources().getColor(R.color.item_line_color));
             mBottomLinePaddingLeft = typedArray.getDimension(R.styleable.custom_top_item_topBottomLinePaddingLeft, 0);
             mBottomLinePaddingRight = typedArray.getDimension(R.styleable.custom_top_item_topBottomLinePaddingRight, 0);
+            typedArray.recycle();
         }
         initPaint();
     }

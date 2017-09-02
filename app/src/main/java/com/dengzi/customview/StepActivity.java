@@ -12,10 +12,16 @@ public class StepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.step_activity);
         initStepView();
+        initStepView2();
     }
 
     private void initStepView() {
         StepView stepView = (StepView) findViewById(R.id.step_view);
+        stepView.setStep(10000, 6000);
+    }
+
+    private void initStepView2() {
+        StepView stepView = (StepView) findViewById(R.id.step_view2);
         stepView.setStep(10000, 6000);
     }
 

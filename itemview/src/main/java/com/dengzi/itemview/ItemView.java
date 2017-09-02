@@ -84,6 +84,7 @@ public class ItemView extends View {
             mTopLinePaddingRight = typedArray.getDimension(R.styleable.custom_item_itemTopLinePaddingRight, 0);
             mBottomLinePaddingLeft = typedArray.getDimension(R.styleable.custom_item_itemBottomLinePaddingLeft, 0);
             mBottomLinePaddingRight = typedArray.getDimension(R.styleable.custom_item_itemBottomLinePaddingRight, 0);
+            typedArray.recycle();
         }
         initPaint();
     }

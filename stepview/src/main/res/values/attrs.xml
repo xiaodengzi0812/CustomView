@@ -2,11 +2,20 @@
 <resources>
 
     <declare-styleable name="custom_step">
-        <attr name="outerColor" format="color" />
-        <attr name="innerColor" format="color" />
+        <attr name="stepOuterColor" format="color" />
+        <attr name="stepInnerColor" format="color" />
         <attr name="stepTextColor" format="color" />
         <attr name="stepTextSize" format="dimension" />
         <attr name="stepLineSize" format="dimension" />
+        <!--外边框起始角度与结束时画了的角度-->
+        <attr name="stepOuterStartAngle" format="integer" />
+        <attr name="stepOuterAddAngle" format="integer" />
+        <!--内边框起始角度与结束角度-->
+        <attr name="stepInnerStartAngle" format="integer" />
+        <!--动画的时间-->
+        <attr name="stepDuration" format="integer" />
+        <!--是否需要动画-->
+        <attr name="stepIsDuration" format="boolean" />
     </declare-styleable>
 
 </resources>

@@ -25,20 +25,28 @@ public class StepView extends View {
     /*默认的线粗*/
     private static final int DEFAULT_LINE_SIZE = 3;
 
-    private String stepText = "0";
-    private int outerColor = getResources().getColor(R.color.outer_color);
-    private int innerColor = getResources().getColor(R.color.inner_color);
-    private int textColor = getResources().getColor(R.color.text_color);
-    private int textSize = DEFAULT_TEXT_SIZE;
-    private int lineSize = DEFAULT_LINE_SIZE;
+    private String mStepText = "0";
+    private int mOuterColor = getResources().getColor(R.color.outer_color);
+    private int mInnerColor = getResources().getColor(R.color.inner_color);
+    private int mTextColor = getResources().getColor(R.color.text_color);
+    private int mTextSize = DEFAULT_TEXT_SIZE;
+    private int mLineSize = DEFAULT_LINE_SIZE;
+    private int mOuterStartAngle = 135;
+    private int mOuterAddAngle = 270;
+    private int mInnerStartAngle = 135;
+    /*默认动画时间*/
+    private int mDuration = 1000;
+    /*是否需要动画*/
+    private boolean mIsDuration = false;
+
     /*三个画笔*/
-    private Paint outerPaint;
-    private Paint innerPaint;
-    private Paint textPaint;
+    private Paint mOuterPaint;
+    private Paint mInnerPaint;
+    private Paint mTextPaint;
 
     /*最大值与现在值*/
-    private int maxStep;
-    private int drawPercent;
+    private int mMaxStep;
+    private int mDrawPercent;
 
     public StepView(Context context) {
         this(context, null);
@@ -53,11 +61,17 @@ public class StepView extends View {
         if (attrs != null) {
             /*获取对应的属性*/
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.custom_step);
-            outerColor = typedArray.getColor(R.styleable.custom_step_outerColor, getResources().getColor(R.color.outer_color));
-            innerColor = typedArray.getColor(R.styleable.custom_step_innerColor, getResources().getColor(R.color.inner_color));
-            textColor = typedArray.getColor(R.styleable.custom_step_stepTextColor, getResources().getColor(R.color.text_color));
-            textSize = typedArray.getDimensionPixelSize(R.styleable.custom_step_stepTextSize, DEFAULT_TEXT_SIZE);
-            lineSize = (int) typedArray.getDimension(R.styleable.custom_step_stepLineSize, DEFAULT_LINE_SIZE);
+            mOuterColor = typedArray.getColor(R.styleable.custom_step_stepOuterColor, getResources().getColor(R.color.outer_color));
+            mInnerColor = typedArray.getColor(R.styleable.custom_step_stepInnerColor, getResources().getColor(R.color.inner_color));
+            mTextColor = typedArray.getColor(R.styleable.custom_step_stepTextColor, getResources().getColor(R.color.text_color));
+            mTextSize = typedArray.getDimensionPixelSize(R.styleable.custom_step_stepTextSize, DEFAULT_TEXT_SIZE);
+            mLineSize = (int) typedArray.getDimension(R.styleable.custom_step_stepLineSize, DEFAULT_LINE_SIZE);
+            mOuterStartAngle = typedArray.getInteger(R.styleable.custom_step_stepOuterStartAngle, 135);
+            mOuterAddAngle = typedArray.getInteger(R.styleable.custom_step_stepOuterAddAngle, 270);
+            mInnerStartAngle = typedArray.getInteger(R.styleable.custom_step_stepInnerStartAngle, 135);
+            mDuration = typedArray.getInteger(R.styleable.custom_step_stepDuration, 1000);
+            mIsDuration = typedArray.getBoolean(R.styleable.custom_step_stepIsDuration, false);
+            typedArray.recycle();
         }
         /*初始化画笔*/
         initOuterPaint();
@@ -65,53 +79,52 @@ public class StepView extends View {
         initTextpain();
     }
 
-
     private void initOuterPaint() {
-        outerPaint = new Paint();
-        outerPaint.setAntiAlias(true);
-        outerPaint.setColor(outerColor);
-        outerPaint.setStyle(Paint.Style.STROKE);
-        outerPaint.setStrokeCap(Paint.Cap.ROUND);
-        outerPaint.setStrokeWidth(lineSize);
+        mOuterPaint = new Paint();
+        mOuterPaint.setAntiAlias(true);
+        mOuterPaint.setColor(mOuterColor);
+        mOuterPaint.setStyle(Paint.Style.STROKE);
+        mOuterPaint.setStrokeCap(Paint.Cap.ROUND);
+        mOuterPaint.setStrokeWidth(mLineSize);
     }
 
     private void initInnerPaint() {
-        innerPaint = new Paint();
-        innerPaint.setAntiAlias(true);
-        innerPaint.setColor(innerColor);
-        innerPaint.setStyle(Paint.Style.STROKE);
-        innerPaint.setStrokeCap(Paint.Cap.ROUND);
-        innerPaint.setStrokeWidth(lineSize);
+        mInnerPaint = new Paint();
+        mInnerPaint.setAntiAlias(true);
+        mInnerPaint.setColor(mInnerColor);
+        mInnerPaint.setStyle(Paint.Style.STROKE);
+        mInnerPaint.setStrokeCap(Paint.Cap.ROUND);
+        mInnerPaint.setStrokeWidth(mLineSize);
     }
 
     private void initTextpain() {
-        textPaint = new Paint();
-        textPaint.setAntiAlias(true);
-        textPaint.setColor(textColor);
-        textPaint.setTextSize(textSize);
+        mTextPaint = new Paint();
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setColor(mTextColor);
+        mTextPaint.setTextSize(mTextSize);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         /*图形的区域*/
-        int space = lineSize / 2;
+        int space = mLineSize / 2;
         RectF oval = new RectF(space, space, getWidth() - space, getHeight() - space);
 
         /*画最外面的一个狐*/
-        canvas.drawArc(oval, 135, 270, false, outerPaint);
+        canvas.drawArc(oval, mOuterStartAngle, mOuterAddAngle, false, mOuterPaint);
 
         /*画里面的一个狐*/
-        canvas.drawArc(oval, 135, drawPercent, false, innerPaint);
+        canvas.drawArc(oval, mInnerStartAngle, mDrawPercent, false, mInnerPaint);
 
         /*画文字*/
         Rect bounds = new Rect();
-        textPaint.getTextBounds(stepText, 0, stepText.length(), bounds);
+        mTextPaint.getTextBounds(mStepText, 0, mStepText.length(), bounds);
         int x = (getWidth() - bounds.width()) / 2;
-        Paint.FontMetricsInt fm = outerPaint.getFontMetricsInt();
+        Paint.FontMetricsInt fm = mOuterPaint.getFontMetricsInt();
         int dy = (fm.bottom - fm.top) / 2 - fm.bottom;
         int baseLineY = getHeight() / 2 + dy;
-        canvas.drawText(stepText, x, baseLineY, textPaint);
+        canvas.drawText(mStepText, x, baseLineY, mTextPaint);
     }
 
     @Override
@@ -119,8 +132,8 @@ public class StepView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        setMeasuredDimension(widthSize < heightSize ? widthSize : heightSize,
-                widthSize < heightSize ? widthSize : heightSize);
+        /*保证正方形，取宽高的最小值*/
+        setMeasuredDimension(Math.min(widthSize, heightSize), Math.min(widthSize, heightSize));
     }
 
     public int sp2px(final float spValue) {
@@ -130,28 +143,32 @@ public class StepView extends View {
     /*设置步数*/
     public void setStep(final int maxStep, int nowStep) {
         if (nowStep > maxStep) {
-            throw new NullPointerException("nowStep > maxStep Error!");
+            throw new NullPointerException("nowStep > mMaxStep Error!");
         }
-        this.maxStep = maxStep;
+        this.mMaxStep = maxStep;
 
-        /*属性动画*/
-        ValueAnimator valueAnimator = ObjectAnimator.ofFloat(0, nowStep);
-        valueAnimator.setDuration(1000);
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                float step = (float) animator.getAnimatedValue();
-                startAnimator((int) step);
-            }
-        });
-        valueAnimator.start();
+        if (mIsDuration) {// 需要动画
+            /*属性动画*/
+            ValueAnimator valueAnimator = ObjectAnimator.ofFloat(0, nowStep);
+            valueAnimator.setDuration(mDuration);
+            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    float step = (float) animator.getAnimatedValue();
+                    startAnimator((int) step);
+                }
+            });
+            valueAnimator.start();
+        } else {
+            startAnimator(nowStep);
+        }
     }
 
     /*绘图*/
     private void startAnimator(int showStep) {
-        drawPercent = showStep * 270 / maxStep;
-        stepText = String.valueOf(showStep);
+        mDrawPercent = showStep * mOuterAddAngle / mMaxStep;
+        mStepText = String.valueOf(showStep);
         invalidate();
     }
 }
