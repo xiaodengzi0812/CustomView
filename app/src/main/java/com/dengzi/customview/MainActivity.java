@@ -15,6 +15,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void drawClick(View view) {
+        startActivity(new Intent(MainActivity.this, DrawActivity.class));
+    }
+
     public void itemClick(View view) {
         startActivity(new Intent(MainActivity.this, ItemActivity.class));
     }
