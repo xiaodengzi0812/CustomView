@@ -44,6 +44,9 @@ public class ItemView extends View {
     /*下线的左右padding*/
     private float mBottomLinePaddingLeft, mBottomLinePaddingRight;
 
+    private Bitmap mLeftBitmap;
+    private Bitmap mRightBitmap;
+
     /*画笔*/
     /*左文字的画笔*/
     private Paint mLeftPaint;
@@ -73,7 +76,13 @@ public class ItemView extends View {
             mLeftTextSize = typedArray.getDimensionPixelSize(R.styleable.custom_item_itemLeftTextSize, 15);
             mRightTextSize = typedArray.getDimensionPixelSize(R.styleable.custom_item_itemRightTextSize, 12);
             mLeftDrawableId = typedArray.getResourceId(R.styleable.custom_item_itemLeftDrawable, 0);
+            if (mLeftDrawableId != 0) {
+                mLeftBitmap = BitmapFactory.decodeResource(getContext().getResources(), mLeftDrawableId);
+            }
             mRightDrawableId = typedArray.getResourceId(R.styleable.custom_item_itemRightDrawable, 0);
+            if (mRightDrawableId != 0) {
+                mRightBitmap = BitmapFactory.decodeResource(getContext().getResources(), mRightDrawableId);
+            }
             mLeftDrawablePadding = typedArray.getDimension(R.styleable.custom_item_itemLeftDrawablePadding, 10);
             mRightDrawablePadding = typedArray.getDimension(R.styleable.custom_item_itemRightDrawablePadding, 10);
             mTopLineHeight = typedArray.getDimension(R.styleable.custom_item_itemTopLineHeight, 1);
@@ -142,10 +151,9 @@ public class ItemView extends View {
         /*画左边的图片*/
         int leftDrawableWidth = 0;
         if (mLeftDrawableId != 0) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mLeftDrawableId);
-            int imgHeith = bitmap.getHeight();
-            leftDrawableWidth = bitmap.getWidth();
-            canvas.drawBitmap(bitmap, getPaddingLeft(), (getHeight() - imgHeith) / 2, mLeftPaint);
+            int imgHeith = mLeftBitmap.getHeight();
+            leftDrawableWidth = mLeftBitmap.getWidth();
+            canvas.drawBitmap(mLeftBitmap, getPaddingLeft(), (getHeight() - imgHeith) / 2, mLeftPaint);
         }
 
         /*画左边的文字*/
@@ -163,10 +171,9 @@ public class ItemView extends View {
         /*画右边的图片*/
         int rightDrawableWidth = 0;
         if (mRightDrawableId != 0) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mRightDrawableId);
-            int imgHeith = bitmap.getHeight();
-            rightDrawableWidth = bitmap.getWidth();
-            canvas.drawBitmap(bitmap, getWidth() - rightDrawableWidth - getPaddingRight(), (getHeight() - imgHeith) / 2, mRightPaint);
+            int imgHeith = mRightBitmap.getHeight();
+            rightDrawableWidth = mRightBitmap.getWidth();
+            canvas.drawBitmap(mRightBitmap, getWidth() - rightDrawableWidth - getPaddingRight(), (getHeight() - imgHeith) / 2, mRightPaint);
         }
 
         /*画右边的文字*/

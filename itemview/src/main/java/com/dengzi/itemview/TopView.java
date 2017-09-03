@@ -36,6 +36,7 @@ public class TopView extends View {
 
     /*左中右右2图片id*/
     private int mLeftDrawableId, mMiddleDrawableId, mRightDrawableId, mRight2DrawableId;
+    private Bitmap mLeftBitmap, mMiddleBitmap, mRightBitmap, Mright2Bitmap;
 
     /*左中右右2文字距左图片的距离*/
     private float mLeftDrawablePadding = 10;
@@ -93,6 +94,18 @@ public class TopView extends View {
             mMiddleDrawableId = typedArray.getResourceId(R.styleable.custom_top_item_topMiddleDrawable, 0);
             mRightDrawableId = typedArray.getResourceId(R.styleable.custom_top_item_topRightDrawable, 0);
             mRight2DrawableId = typedArray.getResourceId(R.styleable.custom_top_item_topRight2Drawable, 0);
+            if (mLeftDrawableId != 0) {
+                mLeftBitmap = BitmapFactory.decodeResource(getContext().getResources(), mLeftDrawableId);
+            }
+            if (mMiddleDrawableId != 0) {
+                mMiddleBitmap = BitmapFactory.decodeResource(getContext().getResources(), mMiddleDrawableId);
+            }
+            if (mRightDrawableId != 0) {
+                mRightBitmap = BitmapFactory.decodeResource(getContext().getResources(), mRightDrawableId);
+            }
+            if (mRight2DrawableId != 0) {
+                Mright2Bitmap = BitmapFactory.decodeResource(getContext().getResources(), mRight2DrawableId);
+            }
 
             mLeftDrawablePadding = typedArray.getDimension(R.styleable.custom_top_item_topLeftDrawablePadding, 10);
             mMiddleDrawablePadding = typedArray.getDimension(R.styleable.custom_top_item_topMiddleDrawablePadding, 10);
@@ -164,10 +177,9 @@ public class TopView extends View {
         /*画左边的图片*/
         int leftDrawableWidth = 0;
         if (mLeftDrawableId != 0) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mLeftDrawableId);
-            int imgHeith = bitmap.getHeight();
-            leftDrawableWidth = bitmap.getWidth();
-            canvas.drawBitmap(bitmap, getPaddingLeft(), (getHeight() - imgHeith) / 2, mLeftPaint);
+            int imgHeith = mLeftBitmap.getHeight();
+            leftDrawableWidth = mLeftBitmap.getWidth();
+            canvas.drawBitmap(mLeftBitmap, getPaddingLeft(), (getHeight() - imgHeith) / 2, mLeftPaint);
         }
 
         /*画左边的文字*/
@@ -184,8 +196,7 @@ public class TopView extends View {
 
         /*画中间的*/
         if (mMiddleDrawableId != 0 && !TextUtils.isEmpty(mMiddleText)) {// 中间即有图片又有文字
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mMiddleDrawableId);
-            int imgHeith = bitmap.getHeight();
+            int imgHeith = mMiddleBitmap.getHeight();
             Rect middleRect = new Rect();
             mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
             int textWidth = middleRect.width();
@@ -193,9 +204,9 @@ public class TopView extends View {
             int middleDy = (middleFm.bottom - middleFm.top) / 2 - middleFm.bottom;
             float middleBaseLineY = getHeight() / 2 + middleDy;
             /*中间文字加图片的宽度*/
-            int middleTextWidth = (int) (bitmap.getWidth() + mMiddleDrawablePadding + textWidth);
-            canvas.drawBitmap(bitmap, getWidth() / 2 - middleTextWidth / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
-            canvas.drawText(mMiddleText, getWidth() / 2 - middleTextWidth / 2 + bitmap.getWidth() + mMiddleDrawablePadding, middleBaseLineY, mMiddlePaint);
+            int middleTextWidth = (int) (mMiddleBitmap.getWidth() + mMiddleDrawablePadding + textWidth);
+            canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - middleTextWidth / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
+            canvas.drawText(mMiddleText, getWidth() / 2 - middleTextWidth / 2 + mMiddleBitmap.getWidth() + mMiddleDrawablePadding, middleBaseLineY, mMiddlePaint);
         } else if (!TextUtils.isEmpty(mMiddleText)) {// 中间只有文字
             Rect middleRect = new Rect();
             mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
@@ -205,18 +216,16 @@ public class TopView extends View {
             float middleBaseLineY = getHeight() / 2 + middleDy;
             canvas.drawText(mMiddleText, getWidth() / 2 - textWidth / 2, middleBaseLineY, mMiddlePaint);
         } else if (mMiddleDrawableId != 0) {// 中间只有图片
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mMiddleDrawableId);
-            int imgHeith = bitmap.getHeight();
-            canvas.drawBitmap(bitmap, getWidth() / 2 - bitmap.getWidth() / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
+            int imgHeith = mMiddleBitmap.getHeight();
+            canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - mMiddleBitmap.getWidth() / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
         }
 
         /*画右2的图片*/
         int toRightWidth = 0;
         if (mRight2DrawableId != 0) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mRight2DrawableId);
-            int imgHeith = bitmap.getHeight();
-            toRightWidth = bitmap.getWidth() + getPaddingRight();
-            canvas.drawBitmap(bitmap, getWidth() - toRightWidth, (getHeight() - imgHeith) / 2, mRight2Paint);
+            int imgHeith = Mright2Bitmap.getHeight();
+            toRightWidth = Mright2Bitmap.getWidth() + getPaddingRight();
+            canvas.drawBitmap(Mright2Bitmap, getWidth() - toRightWidth, (getHeight() - imgHeith) / 2, mRight2Paint);
         }
 
         /*画右2的文字*/
@@ -243,10 +252,9 @@ public class TopView extends View {
 
         /*画右边的图片*/
         if (mRightDrawableId != 0) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), mRightDrawableId);
-            int imgHeith = bitmap.getHeight();
-            toRightWidth = (int) (toRightWidth + bitmap.getWidth() + mRightRight2Padding);
-            canvas.drawBitmap(bitmap, getWidth() - toRightWidth, (getHeight() - imgHeith) / 2, mRightPaint);
+            int imgHeith = mRightBitmap.getHeight();
+            toRightWidth = (int) (toRightWidth + mRightBitmap.getWidth() + mRightRight2Padding);
+            canvas.drawBitmap(mRightBitmap, getWidth() - toRightWidth, (getHeight() - imgHeith) / 2, mRightPaint);
         }
 
         /*画右边的文字*/
