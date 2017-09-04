@@ -14,11 +14,10 @@ import java.util.List;
 
 /**
  * @author Djk
- * @Title:
+ * @Title: 文字变色与ViewPager结合
  * @Time: 2017/8/31.
  * @Version:1.0.0
  */
-
 public class TrackActivity extends AppCompatActivity {
     private String[] topStr = {"新闻", "娱乐", "政治", "体育"};
     LinearLayout topLl;

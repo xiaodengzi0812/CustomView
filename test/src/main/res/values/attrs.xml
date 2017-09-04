@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--format:
+    reference：参考某一资源ID
+    color：颜色值
+    boolean：布尔值
+    dimension：尺寸值
+    float：浮点值
+    integer：整型值
+    string：字符串
+    fraction：百分数
+    enum：枚举值
+    flag：位或运算
+    -->
+
+    <declare-styleable name="mytv">
+        <attr name="myTextColor" format="color" />
+        <attr name="myText" format="string" />
+        <attr name="myTextSize" format="dimension" />
+        <attr name="myInputType" format="enum">
+            <enum name="number" value="1" />
+            <enum name="password" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+
+</resources>

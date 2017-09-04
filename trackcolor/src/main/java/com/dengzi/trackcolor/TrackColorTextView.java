@@ -21,7 +21,9 @@ public class TrackColorTextView extends TextView {
     /*变换的画笔*/
     private Paint mTrackPaint;
     private String mText;
+    /*文字宽度*/
     private int mTextWidth;
+    /**/
     private int mDy;
     private float mClipPercent = 0.0f;
 
@@ -57,6 +59,7 @@ public class TrackColorTextView extends TextView {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.custom_track);
             defaultColor = typedArray.getColor(R.styleable.custom_track_defaultColor, getCurrentTextColor());
             trackColor = typedArray.getColor(R.styleable.custom_track_trackColor, getCurrentTextColor());
+            typedArray.recycle();
         }
         mDefaultPaint = getPaint(defaultColor);
         mTrackPaint = getPaint(trackColor);
@@ -64,6 +67,10 @@ public class TrackColorTextView extends TextView {
 
     /*初始化draw方法的参数*/
     private void initDraw() {
+        /*如果文字一样，则不重新计算*/
+        if (getText().toString().equals(mText)) {
+            return;
+        }
         mText = getText().toString();
         Rect rect = new Rect();
         mDefaultPaint.getTextBounds(mText, 0, mText.length(), rect);
@@ -85,7 +92,9 @@ public class TrackColorTextView extends TextView {
         }
     }
 
+    /*画文字*/
     private void drawText(Canvas canvas, Paint paint, int addFrom, int addTo) {
+        /*获取文字的起始位置*/
         int dx = getWidth() / 2 - mTextWidth / 2;
         int fromDraw = dx + addFrom;
         int toDraw = dx + addTo;
@@ -98,6 +107,7 @@ public class TrackColorTextView extends TextView {
         canvas.restore();
     }
 
+    /*添加画笔*/
     private Paint getPaint(int textColor) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);

@@ -1,1 +1,1 @@
-include ':app', ':mytextview', ':stepview', ':itemview', ':trackcolor'
+include ':app', ':stepview', ':itemview', ':trackcolor', ':test'

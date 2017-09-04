@@ -5,8 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/CustomView.iml" filepath="$PROJECT_DIR$/CustomView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/itemview/itemview.iml" filepath="$PROJECT_DIR$/itemview/itemview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mytextview/mytextview.iml" filepath="$PROJECT_DIR$/mytextview/mytextview.iml" />
       <module fileurl="file://$PROJECT_DIR$/stepview/stepview.iml" filepath="$PROJECT_DIR$/stepview/stepview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/trackcolor/trackcolor.iml" filepath="$PROJECT_DIR$/trackcolor/trackcolor.iml" />
     </modules>
   </component>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -8,84 +7,41 @@
     android:orientation="vertical"
     tools:context="com.dengzi.customview.MainActivity">
 
-    <com.dengzi.mytextview.MyTextView
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff000"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        custom:myText="AAA"
-        custom:myTextSize="20sp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="drawClick"
+        android:text="Draw Test" />
 
-    <com.dengzi.stepview.StepView
-        android:id="@+id/step_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="10dp"
-
-        custom:innerColor="@color/colorAccent"
-        custom:outerColor="@color/colorPrimaryDark"
-        custom:stepLineSize="10dp"
-        custom:stepTextColor="@color/colorAccent"
-        custom:stepTextSize="25sp" />
-
-    <com.dengzi.itemview.ItemView
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="itemClick"
+        android:text="Item自定义view" />
 
-        custom:itemBottomLineColor="#330022"
-        custom:itemBottomLineHeight="2dp"
-        custom:itemBottomLinePaddingLeft="30dp"
-        custom:itemBottomLinePaddingRight="10dp"
-        custom:itemLeftDrawable="@drawable/left"
-
-        custom:itemLeftDrawablePadding="10dp"
-        custom:itemLeftText="关于我们"
-        custom:itemLeftTextColor="#ff0000"
-        custom:itemLeftTextSize="16sp"
-        custom:itemRightDrawable="@drawable/right"
-
-        custom:itemRightDrawablePadding="10dp"
-        custom:itemRightText="V1.0.0"
-        custom:itemRightTextColor="#3322ff"
-        custom:itemRightTextSize="14sp"
-
-        custom:itemTopLineColor="#ff00ff"
-        custom:itemTopLineHeight="2dp"
-        custom:itemTopLinePaddingLeft="10dp"
-        custom:itemTopLinePaddingRight="30dp" />
-
-    <com.dengzi.trackcolor.TrackColorTextView
-        android:id="@+id/track"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:text="小凳子fuck"
-        android:textSize="20sp"
-        custom:defaultColor="#333333"
-        custom:trackColor="#ff0000" />
-
-    <LinearLayout
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="stepClick"
+        android:text="运动步数自定义view" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="leftToRight"
-            android:text="从左到右" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="rightToLeft"
-            android:text="从右到左" />
-
-    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="trackColorClick"
+        android:text="文字变色自定义view" />
 
 
 </LinearLayout>
