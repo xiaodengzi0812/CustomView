@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="default_text_color">#CCCCCC</color>
+    <color name="change_text_color">#ff00ff</color>
+</resources>

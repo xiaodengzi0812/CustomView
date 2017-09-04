@@ -386,5 +386,4 @@ public class DrawTest extends View {
         drawBitmap(canvas);
     }
 
-
 }

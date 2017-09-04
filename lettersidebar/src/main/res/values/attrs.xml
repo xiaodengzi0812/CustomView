@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="custom_letter_side">
+        <attr name="letterSideDefaultTextColor" format="color" />
+        <attr name="letterSideChangeTextColor" format="color" />
+        <attr name="letterSideDefaultTextSize" format="dimension" />
+    </declare-styleable>
+
+</resources>

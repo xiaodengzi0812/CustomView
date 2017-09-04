@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.dengzi.customview.letterside.LetterSideActivity;
 import com.dengzi.customview.trackcolor.TrackActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void trackColorClick(View view) {
         startActivity(new Intent(MainActivity.this, TrackActivity.class));
+    }
+
+    public void letterSideClick(View view) {
+        startActivity(new Intent(MainActivity.this, LetterSideActivity.class));
     }
 
 }
