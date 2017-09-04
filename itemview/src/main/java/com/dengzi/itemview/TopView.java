@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -54,6 +56,12 @@ public class TopView extends View {
     /*下线的左右padding*/
     private float mBottomLinePaddingLeft, mBottomLinePaddingRight;
 
+    /*宽度的区域值*/
+    private float[] mLeftWidth = {0, 0};
+    private float[] mMiddleWidth = {0, 0};
+    private float[] mRightWidth = {0, 0};
+    private float[] mRight2Width = {0, 0};
+
     /*画笔*/
     /*左中右右2文字的画笔*/
     private Paint mLeftPaint;
@@ -62,6 +70,30 @@ public class TopView extends View {
     private Paint mRight2Paint;
     /*下线的画笔*/
     private Paint mBottomPaint;
+
+    public enum Item {
+        LEFT, MIDDLE, RIGHT2, RIGHT
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public static abstract class OnItemClickListener {
+        public void onLeftClick() {
+        }
+
+        public void onRightClick() {
+        }
+
+        public void onRight2Click() {
+        }
+
+        public void onMiddleClick() {
+        }
+    }
 
     public TopView(Context context) {
         this(context, null);
@@ -175,10 +207,12 @@ public class TopView extends View {
         }
 
         /*画左边的图片*/
+        mLeftWidth[0] = getPaddingLeft();/*左控件的起始位置*/
         int leftDrawableWidth = 0;
         if (mLeftDrawableId != 0) {
             int imgHeith = mLeftBitmap.getHeight();
             leftDrawableWidth = mLeftBitmap.getWidth();
+            mLeftWidth[1] = leftDrawableWidth + getPaddingLeft();/*左控件的结束位置*/
             canvas.drawBitmap(mLeftBitmap, getPaddingLeft(), (getHeight() - imgHeith) / 2, mLeftPaint);
         }
 
@@ -188,43 +222,21 @@ public class TopView extends View {
             int leftDy = (leftFm.bottom - leftFm.top) / 2 - leftFm.bottom;
             float leftBaseLineY = getHeight() / 2 + leftDy;
             float leftPadding = getPaddingLeft();
-            if (leftDrawableWidth != 0) {
+            float leftTextWidth = mLeftPaint.measureText(mLeftText);
+            if (leftDrawableWidth != 0) {/*文字前面有图片*/
                 leftPadding += leftDrawableWidth + mLeftDrawablePadding;
             }
+            mLeftWidth[1] = leftPadding + leftTextWidth;/*左控件的结束位置*/
             canvas.drawText(mLeftText, leftPadding, leftBaseLineY, mLeftPaint);
         }
 
-        /*画中间的*/
-        if (mMiddleDrawableId != 0 && !TextUtils.isEmpty(mMiddleText)) {// 中间即有图片又有文字
-            int imgHeith = mMiddleBitmap.getHeight();
-            Rect middleRect = new Rect();
-            mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
-            int textWidth = middleRect.width();
-            Paint.FontMetricsInt middleFm = mMiddlePaint.getFontMetricsInt();
-            int middleDy = (middleFm.bottom - middleFm.top) / 2 - middleFm.bottom;
-            float middleBaseLineY = getHeight() / 2 + middleDy;
-            /*中间文字加图片的宽度*/
-            int middleTextWidth = (int) (mMiddleBitmap.getWidth() + mMiddleDrawablePadding + textWidth);
-            canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - middleTextWidth / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
-            canvas.drawText(mMiddleText, getWidth() / 2 - middleTextWidth / 2 + mMiddleBitmap.getWidth() + mMiddleDrawablePadding, middleBaseLineY, mMiddlePaint);
-        } else if (!TextUtils.isEmpty(mMiddleText)) {// 中间只有文字
-            Rect middleRect = new Rect();
-            mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
-            int textWidth = middleRect.width();
-            Paint.FontMetricsInt middleFm = mMiddlePaint.getFontMetricsInt();
-            int middleDy = (middleFm.bottom - middleFm.top) / 2 - middleFm.bottom;
-            float middleBaseLineY = getHeight() / 2 + middleDy;
-            canvas.drawText(mMiddleText, getWidth() / 2 - textWidth / 2, middleBaseLineY, mMiddlePaint);
-        } else if (mMiddleDrawableId != 0) {// 中间只有图片
-            int imgHeith = mMiddleBitmap.getHeight();
-            canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - mMiddleBitmap.getWidth() / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
-        }
-
         /*画右2的图片*/
+        mRight2Width[1] = getWidth() - getPaddingRight();/*右2控件的结束位置*/
         int toRightWidth = 0;
         if (mRight2DrawableId != 0) {
             int imgHeith = Mright2Bitmap.getHeight();
             toRightWidth = Mright2Bitmap.getWidth() + getPaddingRight();
+            mRight2Width[0] = getWidth() - toRightWidth;/*右2控件的起始位置*/
             canvas.drawBitmap(Mright2Bitmap, getWidth() - toRightWidth, (getHeight() - imgHeith) / 2, mRight2Paint);
         }
 
@@ -241,19 +253,25 @@ public class TopView extends View {
             } else {/*说明已画了图片*/
                 toRightWidth = (int) (toRightWidth + textWidth + mRight2DrawablePadding);
             }
+            mRight2Width[0] = getWidth() - toRightWidth;/*右2控件的起始位置*/
             canvas.drawText(mRight2Text, getWidth() - toRightWidth, right2BaseLineY, mRight2Paint);
         }
 
 
+        /*右边没控件*/
         if (toRightWidth == 0) {
             toRightWidth = getPaddingRight();
             mRightRight2Padding = 0;
+            mRightWidth[1] = getWidth() - getPaddingRight();/*右控件的结束位置*/
+        } else {/*右面已有控件*/
+            mRightWidth[1] = getWidth() - toRightWidth - mRightRight2Padding;/*右控件的结束位置*/
         }
 
+        toRightWidth += mRightRight2Padding;
         /*画右边的图片*/
         if (mRightDrawableId != 0) {
             int imgHeith = mRightBitmap.getHeight();
-            toRightWidth = (int) (toRightWidth + mRightBitmap.getWidth() + mRightRight2Padding);
+            toRightWidth += mRightBitmap.getWidth();
             canvas.drawBitmap(mRightBitmap, getWidth() - toRightWidth, (getHeight() - imgHeith) / 2, mRightPaint);
         }
 
@@ -266,11 +284,80 @@ public class TopView extends View {
             int rightDy = (rightFm.bottom - rightFm.top) / 2 - rightFm.bottom;
             float rightBaseLineY = getHeight() / 2 + rightDy;
 
-            toRightWidth = toRightWidth + textWidth;
-            if (mRightDrawableId != 0) {/*说明右边没图*/
+            toRightWidth += textWidth;
+            if (mRightDrawableId != 0) {/*说明右边有图*/
                 toRightWidth += mRightDrawablePadding;
             }
             canvas.drawText(mRightText, getWidth() - toRightWidth, rightBaseLineY, mRightPaint);
+        }
+        mRightWidth[0] = getWidth() - toRightWidth;
+
+        /*画中间的*/
+        if (mMiddleDrawableId != 0 && !TextUtils.isEmpty(mMiddleText)) {// 中间即有图片又有文字
+            int imgHeith = mMiddleBitmap.getHeight();
+            Rect middleRect = new Rect();
+            mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
+            int textWidth = middleRect.width();
+            Paint.FontMetricsInt middleFm = mMiddlePaint.getFontMetricsInt();
+            int middleDy = (middleFm.bottom - middleFm.top) / 2 - middleFm.bottom;
+            float middleBaseLineY = getHeight() / 2 + middleDy;
+            /*中间文字加图片的宽度*/
+            int middleTextWidth = (int) (mMiddleBitmap.getWidth() + mMiddleDrawablePadding + textWidth);
+            mMiddleWidth[0] = getWidth() / 2 - middleTextWidth / 2;
+            mMiddleWidth[1] = getWidth() / 2 + middleTextWidth / 2;
+            canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - middleTextWidth / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
+            canvas.drawText(mMiddleText, getWidth() / 2 - middleTextWidth / 2 + mMiddleBitmap.getWidth() + mMiddleDrawablePadding, middleBaseLineY, mMiddlePaint);
+        } else if (!TextUtils.isEmpty(mMiddleText)) {// 中间只有文字
+            Rect middleRect = new Rect();
+            mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
+            int textWidth = middleRect.width();
+            Paint.FontMetricsInt middleFm = mMiddlePaint.getFontMetricsInt();
+            int middleDy = (middleFm.bottom - middleFm.top) / 2 - middleFm.bottom;
+            float middleBaseLineY = getHeight() / 2 + middleDy;
+            mMiddleWidth[0] = getWidth() / 2 - textWidth / 2;
+            mMiddleWidth[1] = getWidth() / 2 + textWidth / 2;
+            canvas.drawText(mMiddleText, getWidth() / 2 - textWidth / 2, middleBaseLineY, mMiddlePaint);
+        } else if (mMiddleDrawableId != 0) {// 中间只有图片
+            int imgHeith = mMiddleBitmap.getHeight();
+            mMiddleWidth[0] = getWidth() / 2 - mMiddleBitmap.getWidth() / 2;
+            mMiddleWidth[1] = getWidth() / 2 + mMiddleBitmap.getWidth() / 2;
+            canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - mMiddleBitmap.getWidth() / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
+        }
+    }
+
+    private float mStartX;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mStartX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                if ((event.getX() - mStartX) < 10) {/*点击事件*/
+                    eventClick(event.getX());
+                }
+                break;
+        }
+        return true;
+    }
+
+    /*处理点击事件*/
+    private void eventClick(float clickX) {
+        if (mOnItemClickListener == null) {
+            return;
+        }
+        if (clickX >= mLeftWidth[0] && clickX <= mLeftWidth[1]) {
+            mOnItemClickListener.onLeftClick();
+        }
+        if (clickX >= mRight2Width[0] && clickX <= mRight2Width[1]) {
+            mOnItemClickListener.onRight2Click();
+        }
+        if (clickX >= mRightWidth[0] && clickX <= mRightWidth[1]) {
+            mOnItemClickListener.onRightClick();
+        }
+        if (clickX >= mMiddleWidth[0] && clickX <= mMiddleWidth[1]) {
+            mOnItemClickListener.onMiddleClick();
         }
     }
 }
