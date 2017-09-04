@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="custom_toggle_btn">
+        <attr name="backgroundImage" format="reference" />
+        <attr name="sliddeImage" format="reference" />
+        <attr name="isChecked" format="boolean" />
+    </declare-styleable>
+
+</resources>

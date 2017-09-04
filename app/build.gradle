@@ -27,4 +27,5 @@ dependencies {
     compile project(':trackcolor')
     compile project(':test')
     compile project(':lettersidebar')
+    compile project(':togglebtn')
 }

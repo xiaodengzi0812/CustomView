@@ -1,1 +1,1 @@
-include ':app', ':stepview', ':itemview', ':trackcolor', ':test', ':lettersidebar'
+include ':app', ':stepview', ':itemview', ':trackcolor', ':test', ':lettersidebar', ':togglebtn'

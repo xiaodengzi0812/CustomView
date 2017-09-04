@@ -17,10 +17,11 @@
         </activity>
 
         <activity android:name=".trackcolor.TrackActivity"></activity>
-        <activity android:name=".letterside.LetterSideActivity"></activity>
+        <activity android:name=".LetterSideActivity"></activity>
         <activity android:name=".ItemActivity"></activity>
         <activity android:name=".DrawActivity"></activity>
         <activity android:name=".StepActivity"></activity>
+        <activity android:name=".ToggleBtnActivity"></activity>
     </application>
 
 </manifest>
