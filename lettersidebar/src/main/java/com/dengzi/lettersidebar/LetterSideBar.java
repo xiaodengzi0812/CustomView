@@ -138,7 +138,7 @@ public class LetterSideBar extends View {
         if (mScrollListener != null) {
             if (!show) {
                 /*延迟回调*/
-                new Handler().postDelayed(new Runnable() {
+                postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mScrollListener.onResult(show, mLetters[position]);
