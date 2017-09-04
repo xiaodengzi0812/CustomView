@@ -20,7 +20,7 @@
         custom:itemBottomLineHeight="2dp"
         custom:itemBottomLinePaddingLeft="30dp"
         custom:itemBottomLinePaddingRight="10dp"
-        custom:itemLeftDrawable="@drawable/test"
+        custom:itemLeftDrawable="@drawable/left"
 
         custom:itemLeftDrawablePadding="10dp"
         custom:itemLeftText="关于我们"

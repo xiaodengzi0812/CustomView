@@ -14,7 +14,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:onClick="drawClick"
-        android:text="Draw Test" />
+        android:text="Draw Test"
+        android:textAllCaps="false" />
 
     <Button
         android:layout_width="match_parent"
@@ -23,7 +24,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:onClick="itemClick"
-        android:text="Item自定义view" />
+        android:text="Item自定义View"
+        android:textAllCaps="false" />
 
     <Button
         android:layout_width="match_parent"
@@ -32,7 +34,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:onClick="stepClick"
-        android:text="运动步数自定义view" />
+        android:text="运动步数自定义View"
+        android:textAllCaps="false" />
 
     <Button
         android:layout_width="match_parent"
@@ -41,7 +44,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:onClick="trackColorClick"
-        android:text="文字变色自定义view" />
-
+        android:text="文字变色自定义View"
+        android:textAllCaps="false" />
 
 </LinearLayout>
