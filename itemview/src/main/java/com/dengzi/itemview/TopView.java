@@ -200,7 +200,7 @@ public class TopView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+//        super.onDraw(canvas);
         /*画bottom的线*/
         if (mBottomLineHeight > 0) {
             canvas.drawLine(mBottomLinePaddingLeft, getHeight(), getWidth() - mBottomLinePaddingRight, getHeight(), mBottomPaint);
@@ -292,6 +292,9 @@ public class TopView extends View {
         }
         mRightWidth[0] = getWidth() - toRightWidth;
 
+        /*留给中间view的宽度*/
+        int middleHasWidth = (int) (getWidth() - 2 * (Math.max(mLeftWidth[1], (getWidth() - mRightWidth[0]))) - 50);
+
         /*画中间的*/
         if (mMiddleDrawableId != 0 && !TextUtils.isEmpty(mMiddleText)) {// 中间即有图片又有文字
             int imgHeith = mMiddleBitmap.getHeight();
@@ -308,15 +311,23 @@ public class TopView extends View {
             canvas.drawBitmap(mMiddleBitmap, getWidth() / 2 - middleTextWidth / 2, (getHeight() - imgHeith) / 2, mMiddlePaint);
             canvas.drawText(mMiddleText, getWidth() / 2 - middleTextWidth / 2 + mMiddleBitmap.getWidth() + mMiddleDrawablePadding, middleBaseLineY, mMiddlePaint);
         } else if (!TextUtils.isEmpty(mMiddleText)) {// 中间只有文字
-            Rect middleRect = new Rect();
-            mMiddlePaint.getTextBounds(mMiddleText, 0, mMiddleText.length(), middleRect);
-            int textWidth = middleRect.width();
+            boolean clipText = false;
+            String drawText = mMiddleText;
+            int textWidth = (int) mMiddlePaint.measureText(drawText);
+            try {
+                while (textWidth > middleHasWidth) {
+                    clipText = true;
+                    drawText = drawText.substring(0, drawText.length() - 2);
+                    textWidth = (int) mMiddlePaint.measureText(drawText);
+                }
+            } catch (Exception e) {
+            }
             Paint.FontMetricsInt middleFm = mMiddlePaint.getFontMetricsInt();
             int middleDy = (middleFm.bottom - middleFm.top) / 2 - middleFm.bottom;
             float middleBaseLineY = getHeight() / 2 + middleDy;
             mMiddleWidth[0] = getWidth() / 2 - textWidth / 2;
             mMiddleWidth[1] = getWidth() / 2 + textWidth / 2;
-            canvas.drawText(mMiddleText, getWidth() / 2 - textWidth / 2, middleBaseLineY, mMiddlePaint);
+            canvas.drawText(clipText ? drawText + "..." : drawText, clipText ? getWidth() / 2 - textWidth / 2 - 10 : getWidth() / 2 - textWidth / 2, middleBaseLineY, mMiddlePaint);
         } else if (mMiddleDrawableId != 0) {// 中间只有图片
             int imgHeith = mMiddleBitmap.getHeight();
             mMiddleWidth[0] = getWidth() / 2 - mMiddleBitmap.getWidth() / 2;
