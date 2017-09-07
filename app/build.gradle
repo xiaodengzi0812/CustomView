@@ -28,4 +28,5 @@ dependencies {
     compile project(':test')
     compile project(':lettersidebar')
     compile project(':togglebtn')
+    compile project(':taglayout')
 }

@@ -6,6 +6,12 @@ import android.widget.Toast;
 
 import com.dengzi.itemview.TopView;
 
+/**
+ * @author Djk
+ * @Title: 自定义item
+ * @Time: 2017/9/4.
+ * @Version:1.0.0
+ */
 public class ItemActivity extends AppCompatActivity {
 
     @Override

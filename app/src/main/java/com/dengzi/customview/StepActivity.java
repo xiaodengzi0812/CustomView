@@ -5,6 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.dengzi.stepview.StepView;
 
+/**
+ * @author Djk
+ * @Title: 运动app中步数
+ * @Time: 2017/9/4.
+ * @Version:1.0.0
+ */
 public class StepActivity extends AppCompatActivity {
 
     @Override

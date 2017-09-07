@@ -22,6 +22,7 @@
         <activity android:name=".DrawActivity"></activity>
         <activity android:name=".StepActivity"></activity>
         <activity android:name=".ToggleBtnActivity"></activity>
+        <activity android:name=".taglayout.TagLayoutActivity"></activity>
     </application>
 
 </manifest>
