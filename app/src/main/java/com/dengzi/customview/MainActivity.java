@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.dengzi.customview.draw.DrawActivity;
 import com.dengzi.customview.taglayout.TagLayoutActivity;
 import com.dengzi.customview.trackcolor.TrackActivity;
 

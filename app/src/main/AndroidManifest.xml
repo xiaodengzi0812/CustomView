@@ -19,7 +19,7 @@
         <activity android:name=".trackcolor.TrackActivity"></activity>
         <activity android:name=".LetterSideActivity"></activity>
         <activity android:name=".ItemActivity"></activity>
-        <activity android:name=".DrawActivity"></activity>
+        <activity android:name=".draw.DrawActivity"></activity>
         <activity android:name=".StepActivity"></activity>
         <activity android:name=".ToggleBtnActivity"></activity>
         <activity android:name=".taglayout.TagLayoutActivity"></activity>
