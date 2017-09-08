@@ -49,7 +49,7 @@ public class DrawPath extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = itemHeight * 8;
+        int height = itemHeight * 6;
         setMeasuredDimension(width, height);
     }
 
@@ -118,7 +118,6 @@ public class DrawPath extends View {
         path2.rMoveTo(0, -100);
         path2.rLineTo(200, -200);
         canvas.drawPath(path2, paint);
-
     }
 
     /**
@@ -349,7 +348,7 @@ public class DrawPath extends View {
         672, 48  为控制点坐标
         927, 86  为终点坐标
         */
-        path2.cubicTo(792, 360,672, 48, 927, 86);
+        path2.cubicTo(792, 360, 672, 48, 927, 86);
         paint.setColor(Color.RED);
         canvas.drawPath(path2, paint);
     }
