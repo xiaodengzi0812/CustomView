@@ -1,7 +1,9 @@
 package com.dengzi.customview;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dengzi.itemview.TopView;
@@ -24,6 +26,10 @@ public class ItemActivity extends AppCompatActivity {
 
     private void initTop() {
         TopView topView = (TopView) findViewById(R.id.topview);
+        LinearLayout linearLayout=new LinearLayout(this);
+        linearLayout.setBackgroundColor(Color.parseColor("#ff0000"));
+        linearLayout.addView(topView);
+
         topView.setOnItemClickListener(new TopView.OnItemClickListener() {
             @Override
             public void onLeftClick() {

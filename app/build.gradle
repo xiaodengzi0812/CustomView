@@ -29,4 +29,5 @@ dependencies {
     compile project(':lettersidebar')
     compile project(':togglebtn')
     compile project(':taglayout')
+    compile project(':slidingmenu')
 }

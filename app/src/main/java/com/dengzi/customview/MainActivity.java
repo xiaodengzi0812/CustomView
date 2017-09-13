@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.dengzi.customview.draw.DrawActivity;
+import com.dengzi.customview.slid.SlidingMenuActivity;
 import com.dengzi.customview.taglayout.TagLayoutActivity;
 import com.dengzi.customview.trackcolor.TrackActivity;
 
@@ -43,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void taglayoutBtnClick(View view) {
         startActivity(new Intent(MainActivity.this, TagLayoutActivity.class));
+    }
+
+    public void slidMenuClick(View view) {
+        startActivity(new Intent(MainActivity.this, SlidingMenuActivity.class));
+    }
+
+    public void qqslidMenuClick(View view) {
+        Intent intent = new Intent(MainActivity.this, SlidingMenuActivity.class);
+        intent.putExtra("type", 1);
+        startActivity(intent);
     }
 
 }
