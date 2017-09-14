@@ -72,6 +72,11 @@ public class SlidingMenu extends HorizontalScrollView {
         /*这个方法是XML文件解析完毕会调用*/
         super.onFinishInflate();
         /*获取它的子view*/
+        int parentCount = getChildCount();
+         /*子view个数必须是两个*/
+        if (parentCount != 1) {
+            throw new ArrayIndexOutOfBoundsException("child view count mast be 1!");
+        }
         ViewGroup parentView = (ViewGroup) getChildAt(0);
         int childCount = parentView.getChildCount();
         /*子view个数必须是两个*/

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dengzi.slidingmenu.VerticalSlidingMenu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_sliding_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/slid_menu_bg"
+    app:menuRightMargin="20dp">
+
+    <FrameLayout
+        android:id="@+id/menu_fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/content_fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+    </ScrollView>
+
+</com.dengzi.slidingmenu.VerticalSlidingMenu>

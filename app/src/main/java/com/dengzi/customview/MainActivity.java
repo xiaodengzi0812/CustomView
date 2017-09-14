@@ -56,4 +56,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void verticalSlidMenuClick(View view) {
+        Intent intent = new Intent(MainActivity.this, SlidingMenuActivity.class);
+        intent.putExtra("type", 2);
+        startActivity(intent);
+    }
+
 }

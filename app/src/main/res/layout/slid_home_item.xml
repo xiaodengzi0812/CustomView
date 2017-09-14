@@ -5,10 +5,12 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <com.dengzi.customview.slid.MyListView
-        android:id="@+id/lv"
+    <TextView
+        android:id="@+id/tv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"></com.dengzi.customview.slid.MyListView>
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:textColor="#333333"
+        android:textSize="18sp"></TextView>
 
 </LinearLayout>

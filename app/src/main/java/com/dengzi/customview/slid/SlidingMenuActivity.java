@@ -23,6 +23,8 @@ public class SlidingMenuActivity extends AppCompatActivity {
         int type = getIntent().getIntExtra("type", 0);
         if (type == 1) {
             resourceId = R.layout.qqslid_menu_activity;
+        } else if (type == 2) {
+            resourceId = R.layout.vertical_slid_activity;
         }
         setContentView(resourceId);
         initView();
