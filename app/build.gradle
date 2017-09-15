@@ -30,4 +30,5 @@ dependencies {
     compile project(':togglebtn')
     compile project(':taglayout')
     compile project(':slidingmenu')
+    compile project(':ninelockview')
 }

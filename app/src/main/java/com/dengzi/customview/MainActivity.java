@@ -62,4 +62,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void nineLockClick(View view) {
+        startActivity(new Intent(MainActivity.this, NineLockActivity.class));
+    }
+
 }
