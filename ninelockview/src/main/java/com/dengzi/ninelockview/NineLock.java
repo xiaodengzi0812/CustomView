@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,19 +22,39 @@ import java.util.List;
  */
 public class NineLock extends View {
     /*内环画笔*/
-    private Paint mInnerDefaultPaint, mInnerSelectedPaint;
+    private Paint mInnerDefaultPaint, mInnerSelectedPaint, mInnerErrorPaint;
     /*外环画笔*/
-    private Paint mOuterDefaultPaint, mOuterSelectedPaint;
+    private Paint mOuterDefaultPaint, mOuterSelectedPaint, mOuterErrorPaint;
     /*线画笔*/
-    private Paint mLinePaint;
+    private Paint mLinePaint, mLineErrorPaint;
     /*箭头画笔*/
-    private Paint mArrawPaint;
+    private Paint mArrawPaint, mArrawErrorPaint;
     /*内半径，外半径*/
     private int mInnerRadius, mOuterRadius;
     /*3*3的九个点*/
     private Point[][] mPoints = new Point[3][3];
     /*已选中的点*/
     private List<Point> mSelectPointList = new ArrayList<>();
+    /*当前状态是不是up*/
+    private boolean mIsActionUp = false;
+    /*密码校验成功*/
+    private boolean mIsSuccess = false;
+    /*当前所记录的密码*/
+    private String mPassword = "03678";
+
+    public void setPassword(String password) {
+        this.mPassword = password;
+    }
+
+    private OnResultListener mOnResultListener;
+
+    public void setOnResultListener(OnResultListener onResultListener) {
+        this.mOnResultListener = onResultListener;
+    }
+
+    public interface OnResultListener {
+        void onResult(String result);
+    }
 
     public NineLock(Context context) {
         this(context, null);
@@ -62,11 +84,16 @@ public class NineLock extends View {
     private void initPaint() {
         mInnerDefaultPaint = getPaint(Color.parseColor("#BBBBBB"), 5);
         mInnerSelectedPaint = getPaint(Color.parseColor("#3A99FF"), 8);
+        mInnerErrorPaint = getPaint(Color.parseColor("#CC0033"), 8);
         mOuterDefaultPaint = getPaint(Color.parseColor("#CCCCCC"), 10);
         mOuterSelectedPaint = getPaint(Color.parseColor("#00D8FD"), 13);
+        mOuterErrorPaint = getPaint(Color.parseColor("#CC0033"), 13);
         mLinePaint = getPaint(Color.parseColor("#3A99FF"), 10);
+        mLineErrorPaint = getPaint(Color.parseColor("#CC0033"), 10);
         mArrawPaint = getPaint(Color.parseColor("#3A99FF"), 10);
         mArrawPaint.setStyle(Paint.Style.FILL);
+        mArrawErrorPaint = getPaint(Color.parseColor("#CC0033"), 10);
+        mArrawErrorPaint.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -127,6 +154,14 @@ public class NineLock extends View {
             canvas.drawCircle(point.x, point.y, mInnerRadius, mInnerSelectedPaint);
             canvas.drawCircle(point.x, point.y, mOuterRadius, mOuterSelectedPaint);
         }
+
+        /*当密码错误时*/
+        if (!mIsSuccess && mIsActionUp) {
+            for (Point point : mSelectPointList) {
+                canvas.drawCircle(point.x, point.y, mInnerRadius, mInnerErrorPaint);
+                canvas.drawCircle(point.x, point.y, mOuterRadius, mOuterErrorPaint);
+            }
+        }
     }
 
     /*画线*/
@@ -139,7 +174,7 @@ public class NineLock extends View {
             drawPoint2PointLine(canvas, point0.x, point0.y, point1.x, point1.y);
         }
         /*画最后一个选择的点到手指触摸位置的线*/
-        if (selectPointCount > 0) {
+        if (selectPointCount > 0 && !mIsActionUp) {
             Point lastPoint = mSelectPointList.get(selectPointCount - 1);
             drawPoint2EndLine(canvas, lastPoint.x, lastPoint.y, mEventX, mEventY);
         }
@@ -161,35 +196,41 @@ public class NineLock extends View {
         int newX2 = x2 - radiusX;
         int newY2 = y2 - radiusY;
         canvas.drawLine(newX1, newY1, newX2, newY2, mLinePaint);
-
-        /*箭头的位置*/
+        if (!mIsSuccess && mIsActionUp) {
+            canvas.drawLine(newX1, newY1, newX2, newY2, mLineErrorPaint);
+        }
+        /*箭头的位置,将箭头放到连线的二分之一的位置*/
         double arrowDs = ds * 1 / 2;
-        /*线上的两个点*/
+        /*线上的两个点，在线上找两个点，前面的点是箭头三角形的一个点*/
         double arrowDX1 = x1 + arrowDs * cos;
         double arrowDY1 = y1 + arrowDs * sin;
         float arrowDX2 = (float) (x1 + (arrowDs + 20 * 1.7d) * cos);
         float arrowDY2 = (float) (y1 + (arrowDs + 20 * 1.7d) * sin);
 
-        /*计算箭头的位置*/
+        /*连线的垂直偏移量*/
         double arrowPointX = 20 * sin;
         double arrowPointY = 20 * cos;
 
-        /*第一个点*/
+        /*第一个点，需要一点点数学知识*/
         float arraw1X, arraw1Y;
         arraw1X = (float) (arrowDX1 + arrowPointX);
         arraw1Y = (float) (arrowDY1 - arrowPointY);
 
-        /*第二个点*/
+        /*第二个点，需要一点点数学知识*/
         float arraw2X, arraw2Y;
         arraw2X = (float) (arrowDX1 - arrowPointX);
         arraw2Y = (float) (arrowDY1 + arrowPointY);
 
+        /*在线上画一个三角形*/
         Path path = new Path();
         path.moveTo(arraw1X, arraw1Y);// 此点为多边形的起点
         path.lineTo(arraw2X, arraw2Y);
         path.lineTo(arrowDX2, arrowDY2);
-        path.close(); // 使这些点构成封闭的多边形
+        path.close();
         canvas.drawPath(path, mArrawPaint);
+        if (!mIsSuccess && mIsActionUp) {
+            canvas.drawPath(path, mArrawErrorPaint);
+        }
     }
 
     /*画最后一个选择的点到手指触摸位置的线*/
@@ -223,6 +264,8 @@ public class NineLock extends View {
         mEventY = (int) event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                mIsActionUp = false;
+                /*按下时先将之前选中的清除掉，然后添加当前按下的位置的点*/
                 mSelectPointList.clear();
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
@@ -232,9 +275,9 @@ public class NineLock extends View {
                         }
                     }
                 }
-                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
+                /*move时根据位置添加点*/
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
                         Point point = mPoints[i][j];
@@ -243,12 +286,45 @@ public class NineLock extends View {
                         }
                     }
                 }
-                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
+                mIsActionUp = true;
+                checkPassword();
                 break;
         }
+        invalidate();
         return true;
+    }
+
+    /*检查密码*/
+    private void checkPassword() {
+        StringBuffer sb = new StringBuffer();
+        for (Point point : mSelectPointList) {
+            sb.append(point.key + "");
+        }
+        String pwdStr = sb.toString();
+        if (mOnResultListener != null) {
+            mOnResultListener.onResult(pwdStr);
+        }
+        /*如果设置的密码为null，则不检查密码*/
+        if (TextUtils.isEmpty(mPassword)) {
+            return;
+        }
+        if (mPassword.equals(pwdStr)) {
+            /*密码通过*/
+            mIsSuccess = true;
+        } else {
+            /*密码检查失败，处理*/
+            mIsSuccess = false;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSelectPointList.clear();
+                    invalidate();
+                }
+            }, 2000);
+        }
+
     }
 
     /*圆的业务bean*/
