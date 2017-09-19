@@ -25,6 +25,8 @@
         <activity android:name=".NineLockActivity"></activity>
         <activity android:name=".slid.SlidingMenuActivity"></activity>
         <activity android:name=".taglayout.TagLayoutActivity"></activity>
+        <activity
+            android:name=".statusbar.StatusBarActivity"></activity>
     </application>
 
 </manifest>
