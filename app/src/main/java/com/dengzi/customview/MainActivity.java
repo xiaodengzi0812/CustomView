@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.dengzi.customview.draw.DrawActivity;
+import com.dengzi.customview.materialdesign.MDActivity;
 import com.dengzi.customview.slid.SlidingMenuActivity;
 import com.dengzi.customview.statusbar.StatusBarActivity;
 import com.dengzi.customview.taglayout.TagLayoutActivity;
@@ -69,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void statusBarClick(View view) {
         startActivity(new Intent(MainActivity.this, StatusBarActivity.class));
+    }
+
+    public void mdClick(View view) {
+        startActivity(new Intent(MainActivity.this, MDActivity.class));
     }
 
 }
