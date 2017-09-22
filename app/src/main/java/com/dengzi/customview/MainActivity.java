@@ -10,6 +10,7 @@ import com.dengzi.customview.materialdesign.MDActivity;
 import com.dengzi.customview.recviewtest.RecyAnimatorActivity;
 import com.dengzi.customview.recviewtest.RecyBaseUseActivity;
 import com.dengzi.customview.recviewtest.RecyRefreshActivity;
+import com.dengzi.customview.recviewtest.RecySectionActivity;
 import com.dengzi.customview.slid.SlidingMenuActivity;
 import com.dengzi.customview.statusbar.StatusBarActivity;
 import com.dengzi.customview.taglayout.TagLayoutActivity;
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void recyClick3(View view) {
         startActivity(new Intent(MainActivity.this, RecyRefreshActivity.class));
+    }
+
+    public void recyClick4(View view) {
+        startActivity(new Intent(MainActivity.this, RecySectionActivity.class));
     }
 
 }
