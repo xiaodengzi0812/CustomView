@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#EBEBEB">
+    android:layout_height="100dp"
+    android:background="#CCCCCC">
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:gravity="left|center_vertical"
-        android:text="1"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="头部View"
         android:textColor="#333333"
         android:textSize="16sp" />
 

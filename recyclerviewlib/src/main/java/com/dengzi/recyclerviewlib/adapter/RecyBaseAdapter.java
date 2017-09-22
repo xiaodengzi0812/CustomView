@@ -95,13 +95,13 @@ public abstract class RecyBaseAdapter<T> extends RecyclerView.Adapter<RecyBaseVi
      * 给条目设置点击和长按事件
      **/
     public OnItemClickListener mItemClickListener;
-    public OnLongClickListener mLongClickListener;
+    public OnItemLongClickListener mLongClickListener;
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         this.mItemClickListener = itemClickListener;
     }
 
-    public void setOnLongClickListener(OnLongClickListener longClickListener) {
+    public void setOnLongClickListener(OnItemLongClickListener longClickListener) {
         this.mLongClickListener = longClickListener;
     }
 }

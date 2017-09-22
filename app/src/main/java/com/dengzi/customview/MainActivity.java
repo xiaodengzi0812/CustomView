@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.dengzi.customview.draw.DrawActivity;
 import com.dengzi.customview.materialdesign.MDActivity;
-import com.dengzi.customview.recviewtest.RecyActivity;
+import com.dengzi.customview.recviewtest.RecyAnimatorActivity;
+import com.dengzi.customview.recviewtest.RecyBaseUseActivity;
+import com.dengzi.customview.recviewtest.RecyRefreshActivity;
 import com.dengzi.customview.slid.SlidingMenuActivity;
 import com.dengzi.customview.statusbar.StatusBarActivity;
 import com.dengzi.customview.taglayout.TagLayoutActivity;
@@ -76,8 +78,17 @@ public class MainActivity extends AppCompatActivity {
     public void mdClick(View view) {
         startActivity(new Intent(MainActivity.this, MDActivity.class));
     }
+
     public void recyClick(View view) {
-        startActivity(new Intent(MainActivity.this, RecyActivity.class));
+        startActivity(new Intent(MainActivity.this, RecyBaseUseActivity.class));
+    }
+
+    public void recyClick2(View view) {
+        startActivity(new Intent(MainActivity.this, RecyAnimatorActivity.class));
+    }
+
+    public void recyClick3(View view) {
+        startActivity(new Intent(MainActivity.this, RecyRefreshActivity.class));
     }
 
 }

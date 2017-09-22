@@ -150,5 +150,25 @@
             android:text="RecyclerView"
             android:textAllCaps="false" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="recyClick2"
+            android:text="RecyclerView 动画"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="recyClick3"
+            android:text="RecyclerView 下拉刷新"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 </ScrollView>

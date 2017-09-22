@@ -6,6 +6,6 @@ package com.dengzi.recyclerviewlib.adapter;
  * @Time: 2017/9/20
  * @Version:1.0.0
  */
-public interface OnLongClickListener {
+public interface OnItemLongClickListener {
     boolean onLongClick(int position);
 }

@@ -27,7 +27,9 @@
         <activity android:name=".taglayout.TagLayoutActivity"></activity>
         <activity android:name=".statusbar.StatusBarActivity"></activity>
         <activity android:name=".materialdesign.MDActivity"></activity>
-        <activity android:name=".recviewtest.RecyActivity"></activity>
+        <activity android:name=".recviewtest.RecyBaseUseActivity"></activity>
+        <activity android:name=".recviewtest.RecyAnimatorActivity"></activity>
+        <activity android:name=".recviewtest.RecyRefreshActivity"></activity>
     </application>
 
 </manifest>

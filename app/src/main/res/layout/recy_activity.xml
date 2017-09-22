@@ -30,7 +30,7 @@
             android:textAllCaps="false" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <com.dengzi.recyclerviewlib.header.HeaderRecyclerView
         android:id="@+id/recy_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

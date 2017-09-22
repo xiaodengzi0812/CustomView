@@ -7,7 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+
+import com.dengzi.recyclerviewlib.R;
 
 /**
  * @author Djk
@@ -15,12 +18,31 @@ import android.view.View;
  * @Time: 2017/9/19.
  * @Version:1.0.0
  */
-public class MyItemDecoration extends RecyclerView.ItemDecoration {
+public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private Drawable mDrawable;
+    private int mHeaderNum;
 
-    public MyItemDecoration(Context context, int drawableResource) {
+    public DefaultItemDecoration(Context context) {
+        this(context, R.drawable.list_divider, 0);
+    }
+
+    /**
+     * @param context
+     * @param headerNum 添加头部的数量
+     */
+    public DefaultItemDecoration(Context context, int headerNum) {
+        this(context, R.drawable.list_divider, headerNum);
+    }
+
+    /**
+     * @param context
+     * @param drawableResource 分格线的drawable资源
+     * @param headerNum        添加头部的数量
+     */
+    public DefaultItemDecoration(Context context, int drawableResource, int headerNum) {
         this.mContext = context;
+        this.mHeaderNum = headerNum;
         this.mDrawable = ContextCompat.getDrawable(context, drawableResource);
     }
 
@@ -35,6 +57,10 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
         }
         if (isLastRow(position, parent)) {// 是否是最后一行
             bottom = 0;
+        }
+        if (position < mHeaderNum) {
+            bottom = 0;
+            right = 0;
         }
         outRect.set(0, 0, right, bottom);
     }
@@ -80,7 +106,7 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
      */
     public boolean isLastColumn(int itemPosition, RecyclerView parent) {
         int spanCount = getSpanCount(parent);
-        if ((itemPosition + 1) % spanCount == 0) {
+        if ((itemPosition - mHeaderNum + 1) % spanCount == 0) {
             return true;
         } else {
             return false;
