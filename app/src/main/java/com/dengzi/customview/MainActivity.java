@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.dengzi.customview.draw.DrawActivity;
 import com.dengzi.customview.materialdesign.MDActivity;
+import com.dengzi.customview.mybehavior.BehaviorMainActivity;
 import com.dengzi.customview.recviewtest.RecyAnimatorActivity;
 import com.dengzi.customview.recviewtest.RecyBaseUseActivity;
 import com.dengzi.customview.recviewtest.RecyRefreshActivity;
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void mdClick(View view) {
         startActivity(new Intent(MainActivity.this, MDActivity.class));
+    }
+    public void behaviorClick(View view) {
+        startActivity(new Intent(MainActivity.this, BehaviorMainActivity.class));
     }
 
     public void recyClick(View view) {

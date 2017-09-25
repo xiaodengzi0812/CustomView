@@ -31,6 +31,11 @@
         <activity android:name=".recviewtest.RecyAnimatorActivity"></activity>
         <activity android:name=".recviewtest.RecyRefreshActivity"></activity>
         <activity android:name=".recviewtest.RecySectionActivity"></activity>
+
+        <activity android:name=".mybehavior.BehaviorMainActivity"></activity>
+        <activity android:name=".mybehavior.BackTopActivity"></activity>
+        <activity android:name=".mybehavior.BottomSheetBehaviorActivity"></activity>
+        <activity android:name=".mybehavior.ZhihuActivity"></activity>
     </application>
 
 </manifest>

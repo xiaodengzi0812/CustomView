@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_back_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="回到顶部按钮" />
+
+    <Button
+        android:id="@+id/btn_zhihu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="仿知乎" />
+
+    <Button
+        android:id="@+id/btn_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="底部覆盖Behavior" />
+
+</LinearLayout>

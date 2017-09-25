@@ -146,6 +146,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:onClick="behaviorClick"
+            android:text="自定义Behavior"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:onClick="recyClick"
             android:text="RecyclerView"
             android:textAllCaps="false" />
