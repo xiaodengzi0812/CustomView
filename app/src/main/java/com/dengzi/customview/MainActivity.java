@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public void mdClick(View view) {
         startActivity(new Intent(MainActivity.this, MDActivity.class));
     }
+
     public void behaviorClick(View view) {
         startActivity(new Intent(MainActivity.this, BehaviorMainActivity.class));
     }
@@ -98,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void recyClick4(View view) {
         startActivity(new Intent(MainActivity.this, RecySectionActivity.class));
+    }
+
+    public void loadingClick(View view) {
+        startActivity(new Intent(MainActivity.this, LoadingActivity.class));
     }
 
 }

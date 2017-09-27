@@ -37,6 +37,7 @@
         <activity android:name=".mybehavior.BackTopActivity"></activity>
         <activity android:name=".mybehavior.BottomSheetBehaviorActivity"></activity>
         <activity android:name=".mybehavior.ZhihuActivity"></activity>
+        <activity android:name=".LoadingActivity"></activity>
     </application>
 
 </manifest>

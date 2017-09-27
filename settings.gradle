@@ -1,1 +1,1 @@
-include ':app', ':stepview', ':itemview', ':trackcolor', ':test', ':lettersidebar', ':togglebtn', ':taglayout', ':slidingmenu', ':ninelockview', ':recyclerviewlib'
+include ':app', ':stepview', ':itemview', ':trackcolor', ':test', ':lettersidebar', ':togglebtn', ':taglayout', ':slidingmenu', ':ninelockview', ':recyclerviewlib', ':loading'
