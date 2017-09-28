@@ -200,5 +200,15 @@
             android:text="加载动画"
             android:textAllCaps="false" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="tabScreenClick"
+            android:text="多条目菜单筛选"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 </ScrollView>

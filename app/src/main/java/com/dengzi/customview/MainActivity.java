@@ -14,6 +14,7 @@ import com.dengzi.customview.recviewtest.RecyRefreshActivity;
 import com.dengzi.customview.recviewtest.RecySectionActivity;
 import com.dengzi.customview.slid.SlidingMenuActivity;
 import com.dengzi.customview.statusbar.StatusBarActivity;
+import com.dengzi.customview.tabscreen.TabScreenActivity;
 import com.dengzi.customview.taglayout.TagLayoutActivity;
 import com.dengzi.customview.trackcolor.TrackActivity;
 
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadingClick(View view) {
         startActivity(new Intent(MainActivity.this, LoadingActivity.class));
+    }
+
+    public void tabScreenClick(View view) {
+        startActivity(new Intent(MainActivity.this, TabScreenActivity.class));
     }
 
 }
