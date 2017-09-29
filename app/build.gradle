@@ -35,4 +35,5 @@ dependencies {
     compile project(':recyclerviewlib')
     compile project(':loading')
     compile project(':tabscreen')
+    compile project(':msgbubble')
 }

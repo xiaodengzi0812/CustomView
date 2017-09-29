@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/itemview/itemview.iml" filepath="$PROJECT_DIR$/itemview/itemview.iml" />
       <module fileurl="file://$PROJECT_DIR$/lettersidebar/lettersidebar.iml" filepath="$PROJECT_DIR$/lettersidebar/lettersidebar.iml" />
       <module fileurl="file://$PROJECT_DIR$/loading/loading.iml" filepath="$PROJECT_DIR$/loading/loading.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msgbubble/msgbubble.iml" filepath="$PROJECT_DIR$/msgbubble/msgbubble.iml" />
       <module fileurl="file://$PROJECT_DIR$/ninelockview/ninelockview.iml" filepath="$PROJECT_DIR$/ninelockview/ninelockview.iml" />
       <module fileurl="file://$PROJECT_DIR$/recyclerviewlib/recyclerviewlib.iml" filepath="$PROJECT_DIR$/recyclerviewlib/recyclerviewlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/slidingmenu/slidingmenu.iml" filepath="$PROJECT_DIR$/slidingmenu/slidingmenu.iml" />

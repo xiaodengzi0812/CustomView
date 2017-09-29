@@ -110,4 +110,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, TabScreenActivity.class));
     }
 
+    public void msgBubbleClick(View view) {
+        startActivity(new Intent(MainActivity.this, MsgBubbleActivity.class));
+    }
+
 }

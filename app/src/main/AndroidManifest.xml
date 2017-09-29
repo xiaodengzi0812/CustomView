@@ -39,6 +39,7 @@
         <activity android:name=".mybehavior.ZhihuActivity"></activity>
         <activity android:name=".LoadingActivity"></activity>
         <activity android:name=".tabscreen.TabScreenActivity"></activity>
+        <activity android:name=".MsgBubbleActivity"></activity>
     </application>
 
 </manifest>
