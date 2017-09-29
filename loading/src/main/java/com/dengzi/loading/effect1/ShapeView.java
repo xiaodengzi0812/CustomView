@@ -1,4 +1,4 @@
-package com.dengzi.loading;
+package com.dengzi.loading.effect1;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,8 @@ import android.graphics.Path;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.dengzi.loading.R;
 
 /**
  * @Title: 三种图形切换自定义view

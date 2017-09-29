@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.dengzi.loading.ShapeView
+    <com.dengzi.loading.effect1.ShapeView
         android:id="@+id/shape_view"
         android:layout_width="25dp"
         android:layout_height="25dp"

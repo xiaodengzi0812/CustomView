@@ -1,4 +1,4 @@
-package com.dengzi.loading;
+package com.dengzi.loading.effect1;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+
+import com.dengzi.loading.R;
 
 /**
  * @author Djk
@@ -130,7 +132,6 @@ public class LoadingView extends LinearLayout {
             // 清理动画
             mShapeView.clearAnimation();
             mShadowView.clearAnimation();
-            // 把LoadingView从父布局移除
             removeAllViews();// 移除自己所有的View
             mIsStopAnimator = true;
         }
