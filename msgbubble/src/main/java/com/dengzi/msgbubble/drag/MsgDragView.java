@@ -1,22 +1,25 @@
-package com.dengzi.msgbubble;
+package com.dengzi.msgbubble.drag;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 /**
  * @author Djk
- * @Title: 消息拖拽
+ * @Title: 任意view拖拽
  * @Time: 2017/9/29.
  * @Version:1.0.0
  */
-public class MsgBubbleView extends View {
+public class MsgDragView extends View {
     // 画笔
     private Paint mPaint;
     // 起始点（静止的点） 、 移动点
@@ -27,16 +30,19 @@ public class MsgBubbleView extends View {
     private int mMoveRadius = 50;
     // 最大移动的距离
     private int mMaxDistance = 500;
+    // 要拖拽的view
+    private View mDragView;
+    private Bitmap mDragBitmap;
 
-    public MsgBubbleView(Context context) {
+    public MsgDragView(Context context) {
         this(context, null);
     }
 
-    public MsgBubbleView(Context context, AttributeSet attrs) {
+    public MsgDragView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public MsgBubbleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MsgDragView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initPaint();
     }
@@ -62,39 +68,40 @@ public class MsgBubbleView extends View {
         mStaticRadius = (int) (mMoveRadius - mMoveRadius * getDistance() / mMaxDistance);
         // 当半径大于10才画静止的点和贝塞尔曲线
         if (mStaticRadius > 10) {
-            Path bezeierPath = getBezeierPath();
+            Path bezeierPath = getBezierPath();
             canvas.drawPath(bezeierPath, mPaint);
             canvas.drawCircle(mStaticPoint.x, mStaticPoint.y, mStaticRadius, mPaint);
         }
-        // 画移动的点，半径大小不变
-        canvas.drawCircle(mMovePoint.x, mMovePoint.y, mMoveRadius, mPaint);
+
+        if (mDragBitmap != null) {
+            // 画移动的view 位置也是手指移动的位置 , 中心位置才是手指拖动的位置
+            int centerX = mMovePoint.x - mDragBitmap.getWidth() / 2;
+            int centerY = mMovePoint.y - mDragBitmap.getHeight() / 2;
+            canvas.drawBitmap(mDragBitmap, centerX, centerY, null);
+        }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                // 按下时初始化两个点的坐标
-                mStaticPoint = new Point((int) event.getX(), (int) event.getY());
-                mMovePoint = new Point((int) event.getX(), (int) event.getY());
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // 移动时设置移动点的坐标
-                mMovePoint.x = (int) event.getX();
-                mMovePoint.y = (int) event.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                // 抬起时将两个点置为null
-                mStaticPoint = null;
-                mMovePoint = null;
-                break;
-        }
+    /**
+     * 初始化点
+     */
+    public void initPoint(float x, float y) {
+        // 按下时初始化两个点的坐标
+        mStaticPoint = new Point((int) x, (int) y);
+        mMovePoint = new Point((int) x, (int) y);
+    }
+
+    /**
+     * 移动时更新点坐标
+     */
+    public void updataPoint(float x, float y) {
+        // 移动时设置移动点的坐标
+        mMovePoint.x = (int) x;
+        mMovePoint.y = (int) y;
         invalidate();
-        return true;
     }
 
     /*获取两点的距离*/
-    public double getDistance() {
+    private double getDistance() {
         int x1 = mStaticPoint.x;
         int y1 = mStaticPoint.y;
         int x2 = mMovePoint.x;
@@ -109,7 +116,7 @@ public class MsgBubbleView extends View {
      *
      * @return
      */
-    public Path getBezeierPath() {
+    private Path getBezierPath() {
         //定义一个路径
         Path path = new Path();
         // 获取两点的距离
@@ -154,5 +161,32 @@ public class MsgBubbleView extends View {
         path.quadTo(controlX, controlY, p1X, p1Y);
         path.close();
         return path;
+    }
+
+    /**
+     * 绑定要拖拽的view
+     *
+     * @param view     拖拽的view
+     * @param listener 拖拽的监听回调
+     */
+    public static void bindView(View view, MsgDragListener listener) {
+        view.setOnTouchListener(new MsgDragTouchListener(view, view.getContext()));
+    }
+
+    private MsgDragListener mListener;
+
+    public void setDragBitmap(Bitmap dragBitmap) {
+        this.mDragBitmap = dragBitmap;
+    }
+
+    /**
+     * 拖拽的监听回调
+     */
+    public interface MsgDragListener {
+        // 还原
+        void restore();
+
+        // 消失爆炸
+        void dismiss(PointF pointF);
     }
 }

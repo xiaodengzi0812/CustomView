@@ -64,7 +64,6 @@ public class StatusBarUtil {
         // 插件式换肤：怎么获取资源的，先获取资源id，根据id获取资源
         Resources resources = activity.getResources();
         int statusBarHeightId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        Log.e("TAG", statusBarHeightId + " -> " + resources.getDimensionPixelOffset(statusBarHeightId));
         return resources.getDimensionPixelOffset(statusBarHeightId);
     }
 

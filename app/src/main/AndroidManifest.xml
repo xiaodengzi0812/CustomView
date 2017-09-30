@@ -40,6 +40,7 @@
         <activity android:name=".LoadingActivity"></activity>
         <activity android:name=".tabscreen.TabScreenActivity"></activity>
         <activity android:name=".MsgBubbleActivity"></activity>
+        <activity android:name=".MsgDragActivity"></activity>
     </application>
 
 </manifest>
