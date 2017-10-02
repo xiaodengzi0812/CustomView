@@ -114,4 +114,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, MsgBubbleActivity.class));
     }
 
+    public void msgDragClick(View view) {
+        startActivity(new Intent(MainActivity.this, MsgDragActivity.class));
+    }
+
 }

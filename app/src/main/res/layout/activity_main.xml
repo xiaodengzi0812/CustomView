@@ -220,5 +220,15 @@
             android:text="消息拖拽"
             android:textAllCaps="false" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="msgDragClick"
+            android:text="任意View的拖拽"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 </ScrollView>
