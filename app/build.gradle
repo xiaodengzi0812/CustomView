@@ -36,4 +36,5 @@ dependencies {
     compile project(':loading')
     compile project(':tabscreen')
     compile project(':msgbubble')
+    compile project(':love')
 }

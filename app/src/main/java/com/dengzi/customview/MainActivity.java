@@ -118,4 +118,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, MsgDragActivity.class));
     }
 
+    public void loveClick(View view) {
+        startActivity(new Intent(MainActivity.this, LoveActivity.class));
+    }
+
 }
