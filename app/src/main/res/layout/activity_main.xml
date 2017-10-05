@@ -240,5 +240,15 @@
             android:text="花束直播"
             android:textAllCaps="false" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="parallaxClick"
+            android:text="视差引导页"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 </ScrollView>

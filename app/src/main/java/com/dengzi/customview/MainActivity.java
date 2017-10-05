@@ -122,4 +122,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, LoveActivity.class));
     }
 
+    public void parallaxClick(View view) {
+        startActivity(new Intent(MainActivity.this, ParallaxActivity.class));
+    }
+
 }
