@@ -42,7 +42,7 @@
         <activity android:name=".MsgBubbleActivity"></activity>
         <activity android:name=".MsgDragActivity"></activity>
         <activity android:name=".LoveActivity"></activity>
-        <activity android:name=".ParallaxActivity"></activity>
+        <activity android:name=".parallax.ParallaxActivity"></activity>
     </application>
 
 </manifest>

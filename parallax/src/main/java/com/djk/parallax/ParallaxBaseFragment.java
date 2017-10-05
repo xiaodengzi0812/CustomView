@@ -25,7 +25,7 @@ import java.util.List;
  * @Time: 2017/10/5.
  * @Version:1.0.0
  */
-public class ParallaxFragment extends Fragment implements LayoutInflaterFactory {
+public class ParallaxBaseFragment extends Fragment implements LayoutInflaterFactory {
     public static final String LAYOUT_ID_KEY = "LAYOUT_ID_KEY";
 
     private CompatViewInflater mCompatViewInflater;

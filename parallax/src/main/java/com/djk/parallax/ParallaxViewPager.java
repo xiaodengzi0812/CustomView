@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.List;
  * @Version:1.0.0
  */
 public class ParallaxViewPager extends ViewPager {
-    private List<ParallaxFragment> mFragmentList = new ArrayList<>();
+    private List<ParallaxBaseFragment> mFragmentList = new ArrayList<>();
 
     public ParallaxViewPager(Context context) {
         this(context, null);
@@ -38,20 +37,37 @@ public class ParallaxViewPager extends ViewPager {
     public void addLayout(FragmentManager fm, int[] layoutIds) {
         mFragmentList.clear();
         for (int layoutId : layoutIds) {
-            ParallaxFragment fragment = new ParallaxFragment();
+            ParallaxBaseFragment fragment = new ParallaxBaseFragment();
             Bundle args = new Bundle();
-            args.putInt(ParallaxFragment.LAYOUT_ID_KEY, layoutId);
+            args.putInt(ParallaxBaseFragment.LAYOUT_ID_KEY, layoutId);
             fragment.setArguments(args);
             mFragmentList.add(fragment);
         }
         setAdapter(new MyAdapter(fm));
+        setListener();
+    }
 
+    /**
+     * 添加布局文件
+     *
+     * @param fragmentList 布局fragment集合
+     */
+    public void addLayout(FragmentManager fm, List<ParallaxBaseFragment> fragmentList) {
+        mFragmentList.clear();
+        mFragmentList.addAll(fragmentList);
+        setAdapter(new MyAdapter(fm));
+        setListener();
+    }
+
+    /**
+     * 设置监听事件
+     */
+    private void setListener() {
         addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 // 滚动  position 当前位置    positionOffset 0-1     positionOffsetPixels 0-屏幕的宽度px
-                Log.e("dengzi", "position->" + position + " positionOffset->" + positionOffset + " positionOffsetPixels->" + positionOffsetPixels);
-                ParallaxFragment outFragment = mFragmentList.get(position);
+                ParallaxBaseFragment outFragment = mFragmentList.get(position);
                 List<View> outParallaxViews = outFragment.getParallaxViews();
                 for (View parallaxView : outParallaxViews) {
                     ParallaxTag tag = (ParallaxTag) parallaxView.getTag(R.id.parallax_tag);
@@ -60,7 +76,7 @@ public class ParallaxViewPager extends ViewPager {
                 }
 
                 try {
-                    ParallaxFragment inFragment = mFragmentList.get(position + 1);
+                    ParallaxBaseFragment inFragment = mFragmentList.get(position + 1);
                     List<View> inParallaxViews = inFragment.getParallaxViews();
                     for (View parallaxView : inParallaxViews) {
                         ParallaxTag tag = (ParallaxTag) parallaxView.getTag(R.id.parallax_tag);

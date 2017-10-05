@@ -8,6 +8,7 @@ import android.view.View;
 import com.dengzi.customview.draw.DrawActivity;
 import com.dengzi.customview.materialdesign.MDActivity;
 import com.dengzi.customview.mybehavior.BehaviorMainActivity;
+import com.dengzi.customview.parallax.ParallaxActivity;
 import com.dengzi.customview.recviewtest.RecyAnimatorActivity;
 import com.dengzi.customview.recviewtest.RecyBaseUseActivity;
 import com.dengzi.customview.recviewtest.RecyRefreshActivity;
