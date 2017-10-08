@@ -28,6 +28,8 @@ public class LoadingView extends RelativeLayout {
     private final long ANIMATION_TIME = 400;
     // 是否停止动画
     private boolean mIsStopAnimator = false;
+    // 小球往外跑和往里跑的动画集合
+    private AnimatorSet mExpendAnimatorSet, mInnerAnimatorSet;
 
     public LoadingView(Context context) {
         this(context, null);
@@ -50,21 +52,6 @@ public class LoadingView extends RelativeLayout {
         initLayout();
     }
 
-    private void initLayout() {
-        addView(mLeftView);
-        addView(mRightView);
-        addView(mTopView);
-        addView(mBottomView);
-        addView(mMiddleView);
-        // 让布局实例化好之后再去开启动画
-        post(new Runnable() {
-            @Override
-            public void run() {
-                expendAnimation();
-            }
-        });
-    }
-
     /**
      * 获取圆形
      *
@@ -80,12 +67,29 @@ public class LoadingView extends RelativeLayout {
         return circleView;
     }
 
+    private void initLayout() {
+        addView(mLeftView);
+        addView(mRightView);
+        addView(mTopView);
+        addView(mBottomView);
+        addView(mMiddleView);
+
+        initExpendAnimation();
+        initInnerAnimation();
+
+        // 让布局实例化好之后再去开启动画
+        post(new Runnable() {
+            @Override
+            public void run() {
+                expendAnimation();
+            }
+        });
+    }
 
     /**
-     * 小球往外跑
+     * 初始化小球往外跑动画
      */
-    private void expendAnimation() {
-        if (mIsStopAnimator) return;
+    private void initExpendAnimation() {
         // 上边跑
         ObjectAnimator topTranslationAnimator = ObjectAnimator.ofFloat(mTopView, "translationY", 0, -mTranslationDistance);
         // 下边跑
@@ -95,25 +99,23 @@ public class LoadingView extends RelativeLayout {
         // 右边跑
         ObjectAnimator rightTranslationAnimator = ObjectAnimator.ofFloat(mRightView, "translationX", 0, mTranslationDistance);
         // 弹性效果  荡秋千一样 差值器   刚开始快越来越慢
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(ANIMATION_TIME);
-        set.playTogether(leftTranslationAnimator, rightTranslationAnimator, topTranslationAnimator, bottomTranslationAnimator);
-        set.setInterpolator(new DecelerateInterpolator());
-        set.addListener(new AnimatorListenerAdapter() {
+        mExpendAnimatorSet = new AnimatorSet();
+        mExpendAnimatorSet.setDuration(ANIMATION_TIME);
+        mExpendAnimatorSet.playTogether(leftTranslationAnimator, rightTranslationAnimator, topTranslationAnimator, bottomTranslationAnimator);
+        mExpendAnimatorSet.setInterpolator(new DecelerateInterpolator());
+        mExpendAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 // 从外往里面跑
                 innerAnimation();
             }
         });
-        set.start();
     }
 
     /**
-     * 小球往里跑
+     * 初始化小球往里跑动画
      */
-    private void innerAnimation() {
-        if (mIsStopAnimator) return;
+    private void initInnerAnimation() {
         // 上边跑
         ObjectAnimator topTranslationAnimator = ObjectAnimator.ofFloat(mTopView, "translationY", -mTranslationDistance, 0);
         // 下边跑
@@ -122,11 +124,11 @@ public class LoadingView extends RelativeLayout {
         ObjectAnimator leftTranslationAnimator = ObjectAnimator.ofFloat(mLeftView, "translationX", -mTranslationDistance, 0);
         // 右边跑
         ObjectAnimator rightTranslationAnimator = ObjectAnimator.ofFloat(mRightView, "translationX", mTranslationDistance, 0);
-        AnimatorSet set = new AnimatorSet();
-        set.setInterpolator(new AccelerateInterpolator());
-        set.setDuration(ANIMATION_TIME);
-        set.playTogether(leftTranslationAnimator, rightTranslationAnimator, topTranslationAnimator, bottomTranslationAnimator);
-        set.addListener(new AnimatorListenerAdapter() {
+        mInnerAnimatorSet = new AnimatorSet();
+        mInnerAnimatorSet.setInterpolator(new AccelerateInterpolator());
+        mInnerAnimatorSet.setDuration(ANIMATION_TIME);
+        mInnerAnimatorSet.playTogether(leftTranslationAnimator, rightTranslationAnimator, topTranslationAnimator, bottomTranslationAnimator);
+        mInnerAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 // 切换颜色顺序  上边的给中间 中间的给左边  左边的给下边 下边的给右边  右边的给上面
@@ -144,7 +146,22 @@ public class LoadingView extends RelativeLayout {
                 expendAnimation();
             }
         });
-        set.start();
+    }
+
+    /**
+     * 小球往外跑
+     */
+    private void expendAnimation() {
+        if (mIsStopAnimator) return;
+        mExpendAnimatorSet.start();
+    }
+
+    /**
+     * 小球往里跑
+     */
+    private void innerAnimation() {
+        if (mIsStopAnimator) return;
+        mInnerAnimatorSet.start();
     }
 
     private int dip2px(int dip) {

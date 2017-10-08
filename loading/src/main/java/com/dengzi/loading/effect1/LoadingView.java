@@ -31,6 +31,8 @@ public class LoadingView extends LinearLayout {
     private final long ANIMATOR_DURATION = 500;
     // 是否停止动画
     private boolean mIsStopAnimator = false;
+    // 下落和上弹动画集合
+    private AnimatorSet mFallAnimatorSet, mUpAnimatorSet;
 
     public LoadingView(Context context) {
         this(context, null);
@@ -45,15 +47,17 @@ public class LoadingView extends LinearLayout {
         initLayout();
     }
 
-    private int dip2px(int dip) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
-    }
-
+    /**
+     * 初始化当前view
+     */
     private void initLayout() {
         mTranslationDistance = dip2px(80);
         inflate(getContext(), R.layout.loading_view, this);
         mShapeView = (ShapeView) findViewById(R.id.shape_view);
         mShadowView = findViewById(R.id.shadow_view);
+        // 初始化动画
+        initFallAnimator();
+        initUpAnimator();
         // view的绘制流程走完后再调用动画
         post(new Runnable() {
             @Override
@@ -64,23 +68,20 @@ public class LoadingView extends LinearLayout {
     }
 
     /**
-     * 下落动画
+     * 初始化下落动画
      */
-    private void startFallAnimator() {
-        if (mIsStopAnimator) return;
+    private void initFallAnimator() {
         // 图形的位移动画
         ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(mShapeView, "translationY", 0, mTranslationDistance);
         // 配合中间阴影缩小
         ObjectAnimator scaleAnimator = ObjectAnimator.ofFloat(mShadowView, "scaleX", 1.0f, 0.3f);
         // 动画集合
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(ANIMATOR_DURATION);
-        animatorSet.setInterpolator(new AccelerateInterpolator());
-        animatorSet.playTogether(translationAnimator, scaleAnimator);
-        animatorSet.start();
-
+        mFallAnimatorSet = new AnimatorSet();
+        mFallAnimatorSet.setDuration(ANIMATOR_DURATION);
+        mFallAnimatorSet.setInterpolator(new AccelerateInterpolator());
+        mFallAnimatorSet.playTogether(translationAnimator, scaleAnimator);
         // 添加一个结束的监听事件，本次动画结束后就去执行向上弹的动画
-        animatorSet.addListener(new AnimatorListenerAdapter() {
+        mFallAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 // 改变图形样式
@@ -88,7 +89,39 @@ public class LoadingView extends LinearLayout {
                 startUpAnimator();
             }
         });
+    }
 
+    /**
+     * 初始化上弹动画
+     */
+    private void initUpAnimator() {
+        // 图形的位移动画
+        ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(mShapeView, "translationY", mTranslationDistance, 0);
+        // 配合中间阴影放大
+        ObjectAnimator scaleAnimator = ObjectAnimator.ofFloat(mShadowView, "scaleX", 0.3f, 1.0f);
+        // 图形的旋转
+        ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(mShapeView, "rotation", 0, 180);
+        // 动画集合
+        mUpAnimatorSet = new AnimatorSet();
+        mUpAnimatorSet.setDuration(ANIMATOR_DURATION);
+        mUpAnimatorSet.setInterpolator(new DecelerateInterpolator());
+        mUpAnimatorSet.playTogether(translationAnimator, scaleAnimator, rotationAnimator);
+        // 添加一个结束的监听事件，本次动画结束后就去执行向上弹的动画
+        mUpAnimatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // 上抛完之后就下落了
+                startFallAnimator();
+            }
+        });
+    }
+
+    /**
+     * 下落动画
+     */
+    private void startFallAnimator() {
+        if (mIsStopAnimator) return;
+        mFallAnimatorSet.start();
     }
 
     /**
@@ -96,28 +129,11 @@ public class LoadingView extends LinearLayout {
      */
     private void startUpAnimator() {
         if (mIsStopAnimator) return;
-        // 图形的位移动画
-        ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(mShapeView, "translationY", mTranslationDistance, 0);
-        // 配合中间阴影放大
-        ObjectAnimator scaleAnimator = ObjectAnimator.ofFloat(mShadowView, "scaleX", 0.3f, 1.0f);
-        // 图形的旋转
-        ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(mShapeView, "rotation", 0, 180);
+        mUpAnimatorSet.start();
+    }
 
-        // 动画集合
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(ANIMATOR_DURATION);
-        animatorSet.setInterpolator(new DecelerateInterpolator());
-        animatorSet.playTogether(translationAnimator, scaleAnimator, rotationAnimator);
-        animatorSet.start();
-
-        // 添加一个结束的监听事件，本次动画结束后就去执行向上弹的动画
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                // 上抛完之后就下落了
-                startFallAnimator();
-            }
-        });
+    private int dip2px(int dip) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
     }
 
     @Override
