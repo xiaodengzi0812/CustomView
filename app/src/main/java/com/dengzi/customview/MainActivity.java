@@ -8,6 +8,7 @@ import android.view.View;
 import com.dengzi.customview.draw.DrawActivity;
 import com.dengzi.customview.materialdesign.MDActivity;
 import com.dengzi.customview.mybehavior.BehaviorMainActivity;
+import com.dengzi.customview.parallax.ParallaxActivity;
 import com.dengzi.customview.recviewtest.RecyAnimatorActivity;
 import com.dengzi.customview.recviewtest.RecyBaseUseActivity;
 import com.dengzi.customview.recviewtest.RecyRefreshActivity;
@@ -116,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void msgDragClick(View view) {
         startActivity(new Intent(MainActivity.this, MsgDragActivity.class));
+    }
+
+    public void loveClick(View view) {
+        startActivity(new Intent(MainActivity.this, LoveActivity.class));
+    }
+
+    public void parallaxClick(View view) {
+        startActivity(new Intent(MainActivity.this, ParallaxActivity.class));
     }
 
 }

@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">CustomView</string>
 
+    <!--自定义behavior-->
     <string name="scale_down_show_behavior">com.dengzi.customview.mybehavior.behavior.ScaleDownShowBehavior</string>
     <string name="scale_up_show_behavior">com.dengzi.customview.mybehavior.behavior.ScaleUpShowBehavior</string>
     <string name="swipe_dismiss_behavior">android.support.design.widget.SwipeDismissBehavior</string>
+
+
+    <!--视差效果-->
+    <string name="text_web_ceo">WEB ANALYTICS</string>
+    <string name="text_web_dev">WEB DEVELOPER</string>
+    <string name="text_e_commerce">e-Commerce</string>
 </resources>

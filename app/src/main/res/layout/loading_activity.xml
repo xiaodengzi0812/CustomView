@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/cherry"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
         android:orientation="horizontal">
 
         <Button
@@ -20,20 +23,41 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:onClick="effect2"
             android:text="效果2" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="effect3"
+            android:text="效果3" />
 
     </LinearLayout>
 
     <com.dengzi.loading.effect1.LoadingView
         android:id="@+id/loading_view1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone" />
 
     <com.dengzi.loading.effect2.LoadingView
         android:id="@+id/loading_view2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone" />
 
-</LinearLayout>
+
+    <com.dengzi.loading.effect3.LoadingView
+        android:id="@+id/loading_view3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone" />
+
+</RelativeLayout>
