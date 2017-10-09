@@ -42,6 +42,7 @@
         <activity android:name=".MsgDragActivity"></activity>
         <activity android:name=".LoveActivity"></activity>
         <activity android:name=".parallax.ParallaxActivity"></activity>
+        <activity android:name=".VerticalViewPager.VerticalVpActivity"></activity>
     </application>
 
 </manifest>

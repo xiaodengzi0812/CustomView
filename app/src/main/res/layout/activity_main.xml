@@ -250,5 +250,15 @@
             android:text="视差引导页"
             android:textAllCaps="false" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="verticalVpClick"
+            android:text="竖方向ViewPager"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 </ScrollView>
