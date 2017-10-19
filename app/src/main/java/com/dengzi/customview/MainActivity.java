@@ -132,4 +132,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, VerticalVpActivity.class));
     }
 
+    public void topbarClick(View view) {
+        startActivity(new Intent(MainActivity.this, TopBarActivity.class));
+    }
+
 }

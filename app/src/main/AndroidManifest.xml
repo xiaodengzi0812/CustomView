@@ -43,6 +43,7 @@
         <activity android:name=".LoveActivity"></activity>
         <activity android:name=".parallax.ParallaxActivity"></activity>
         <activity android:name=".VerticalViewPager.VerticalVpActivity"></activity>
+        <activity android:name=".TopBarActivity"></activity>
     </application>
 
 </manifest>
