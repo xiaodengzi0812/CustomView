@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".trackcolor.TrackActivity"></activity>
@@ -44,6 +44,13 @@
         <activity android:name=".parallax.ParallaxActivity"></activity>
         <activity android:name=".VerticalViewPager.VerticalVpActivity"></activity>
         <activity android:name=".TopBarActivity"></activity>
+        <activity android:name=".banner.BannerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -41,4 +41,5 @@ dependencies {
     compile project(':parallax')
     compile project(':viewpager')
     compile project(':topbarlib')
+    compile project(':bannerlib')
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="banner_view">
+        <!--点的大小-->
+        <attr name="pointSize" format="dimension" />
+        <!--已选中点-->
+        <attr name="pointSelectDrawable" format="color|reference" />
+        <!--默认点-->
+        <attr name="pointDefaultDrawable" format="color|reference" />
+        <!--两个点距离-->
+        <attr name="pointDistance" format="dimension" />
+        <!--点的位置-->
+        <attr name="pointGravity" format="enum">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+
+        <!--文字大小-->
+        <attr name="descTextSize" format="dimension" />
+        <!--文字大小-->
+        <attr name="descTextColor" format="color" />
+        <!--文字的位置-->
+        <attr name="descTextGravity" format="enum">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+
+        <!--底部控件的背景色-->
+        <attr name="bottomLayoutBackGroundColor" format="color" />
+        <!--底部控件的左Padding-->
+        <attr name="bottomLayoutPaddingLeft" format="dimension" />
+        <!--底部控件的右Padding-->
+        <attr name="bottomLayoutPaddingRight" format="dimension" />
+        <!--底部控件的右Padding-->
+        <attr name="bottomLayoutPaddingTop" format="dimension" />
+        <!--底部控件的右Padding-->
+        <attr name="bottomLayoutPaddingBottom" format="dimension" />
+
+    </declare-styleable>
+
+</resources>

@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bannerlib" />
             <option value="$PROJECT_DIR$/itemview" />
             <option value="$PROJECT_DIR$/lettersidebar" />
             <option value="$PROJECT_DIR$/loading" />

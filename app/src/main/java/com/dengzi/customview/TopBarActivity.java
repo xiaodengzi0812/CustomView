@@ -8,12 +8,18 @@ import android.widget.Toast;
 
 import com.djk.topbarlib.DefTopBar;
 
+/**
+ * @Title: builder模式创建TopBar
+ * @Author: djk
+ * @Time: 2017/10/19
+ * @Version:1.0.0
+ */
 public class TopBarActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topbar);
+        setContentView(R.layout.topbar_activity);
 
         initTitle();
         initTitle2();
