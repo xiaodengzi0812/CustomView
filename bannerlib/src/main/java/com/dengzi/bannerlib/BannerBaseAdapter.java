@@ -22,10 +22,12 @@ public abstract class BannerBaseAdapter {
     /**
      * 通过position去获取view
      *
-     * @param position
+     * @param position   当前位置
+     * @param parentView 父类
+     * @param reuseView  可复用的view
      * @return
      */
-    public abstract View getView(ViewGroup parentView, int position);
+    public abstract View getView(int position, ViewGroup parentView, View reuseView);
 
     /**
      * 通过position去获取广告描述

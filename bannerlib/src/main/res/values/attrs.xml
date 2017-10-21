@@ -39,6 +39,10 @@
         <!--底部控件的右Padding-->
         <attr name="bottomLayoutPaddingBottom" format="dimension" />
 
+        <!--宽高比例-->
+        <attr name="heightProportion" format="float" />
+        <attr name="widthProportion" format="float" />
+
     </declare-styleable>
 
 </resources>

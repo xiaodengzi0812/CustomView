@@ -2,7 +2,6 @@ package com.dengzi.bannerlib;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -11,6 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -38,37 +38,17 @@ public class BannerView extends RelativeLayout {
     // 当前选中的位置
     private int mCurrentPosition = 0;
     // 圆点的大小
-    private int mPointSize;
+    private int mPointSize = 6;
+    // 点之前的距离
+    private int mPointDistance = 8;
     // 默认点的Drawable
     private Drawable mPointDefaultDrawable;
     // 选中点的Drawable
     private Drawable mPointSelectDrawable;
-    // 点之前的距离
-    private int mPointDistance;
-
-    // 圆点默认颜色
-    private final int DEFAULT_POINT_COLOR = Color.GRAY;
-    // 圆点默认选中颜色
-    private final int DEFAULT_POINT_SELECT_COLOR = Color.WHITE;
-    // 圆点默认值大小
-    private final int DEFAULT_POINT_SIZE = 6;
-    // 圆点间距离默认值
-    private final int DEFAULT_POINT_DISTANCE = 8;
-    // 圆点默认位置 （-1:left 0:center 1:right）
-    private final int DEFAULT_POINT_GRAVITY = 1;
-    // 文本默认字体大小
-    private final int DEFAULT_TEXT_SIZE = 12;
-    // 文本默认字体颜色
-    private final int DEFAULT_TEXT_COLOR = Color.WHITE;
-    // 文本默认位置 （-1:left 0:center 1:right）
-    private final int DEFAULT_TEXT_GRAVITY = -1;
-    // 底部控件默认颜色
-    private final int DEFAULT_BG_COLOR = Color.parseColor("#88888888");
-    // 底部控件左右padding
-    private final int DEFAULT_BG_PADDING_LEFT_RIGHT = 12;
-    // 底部控件上下padding
-    private final int DEFAULT_BG_PADDING_TOP_BOTTOM = 6;
-
+    // 宽比例
+    private float mWidthProportion = 0;
+    // 高比例
+    private float mHeightProportion = 0;
 
     public BannerView(Context context) {
         this(context, null);
@@ -81,7 +61,7 @@ public class BannerView extends RelativeLayout {
     public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-        inflate(context, R.layout.banner_view, this);
+        addView(LayoutInflater.from(context).inflate(R.layout.banner_view, this, false));
         initView();
         initAttrs(attrs);
     }
@@ -99,24 +79,40 @@ public class BannerView extends RelativeLayout {
     /**
      * 初始化属性
      *
-     * @param attrs
+     * @param attrs 传来的属性
      */
     private void initAttrs(AttributeSet attrs) {
+        // 圆点默认颜色
+        final int DEFAULT_POINT_COLOR = Color.GRAY;
+        // 圆点默认选中颜色
+        final int DEFAULT_POINT_SELECT_COLOR = Color.WHITE;
+        // 圆点默认位置 （-1:left 0:center 1:right）
+        final int DEFAULT_POINT_GRAVITY = 0;
+        // 文本默认字体大小
+        final int DEFAULT_TEXT_SIZE = 12;
+        // 文本默认字体颜色
+        final int DEFAULT_TEXT_COLOR = Color.WHITE;
+        // 文本默认位置 （-1:left 0:center 1:right）
+        final int DEFAULT_TEXT_GRAVITY = -1;
+        // 底部控件默认透明
+        final int DEFAULT_BG_COLOR = Color.TRANSPARENT;
+        // 底部控件左右padding
+        final int DEFAULT_BG_PADDING_LEFT_RIGHT = 12;
+        // 底部控件上下padding
+        final int DEFAULT_BG_PADDING_TOP_BOTTOM = 6;
+
         if (attrs != null) {
             TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.banner_view);
+            // 宽高比例
+            mWidthProportion = typedArray.getFloat(R.styleable.banner_view_widthProportion, mWidthProportion);
+            mHeightProportion = typedArray.getFloat(R.styleable.banner_view_heightProportion, mHeightProportion);
+
             // 点的一些属性
-            mPointSize = typedArray.getDimensionPixelSize(R.styleable.banner_view_pointSize, dp2px(DEFAULT_POINT_SIZE));
+            mPointSize = typedArray.getDimensionPixelSize(R.styleable.banner_view_pointSize, dp2px(mPointSize));
             mPointSelectDrawable = typedArray.getDrawable(R.styleable.banner_view_pointSelectDrawable);
             mPointDefaultDrawable = typedArray.getDrawable(R.styleable.banner_view_pointDefaultDrawable);
-            mPointDistance = typedArray.getDimensionPixelSize(R.styleable.banner_view_pointDistance, dp2px(DEFAULT_POINT_DISTANCE));
+            mPointDistance = typedArray.getDimensionPixelSize(R.styleable.banner_view_pointDistance, dp2px(mPointDistance));
             int pointGravity = typedArray.getInt(R.styleable.banner_view_pointGravity, DEFAULT_POINT_GRAVITY);
-            // 如果没有设置过点的颜色，给一个默认颜色的ColorDrawable
-            if (mPointDefaultDrawable == null) {
-                mPointDefaultDrawable = new ColorDrawable(DEFAULT_POINT_COLOR);
-            }
-            if (mPointSelectDrawable == null) {
-                mPointSelectDrawable = new ColorDrawable(DEFAULT_POINT_SELECT_COLOR);
-            }
 
             // 文本的一些属性
             float descTextSize = typedArray.getDimensionPixelSize(R.styleable.banner_view_descTextSize, sp2px(DEFAULT_TEXT_SIZE));
@@ -130,6 +126,14 @@ public class BannerView extends RelativeLayout {
             int bottomLayoutPaddingTop = typedArray.getDimensionPixelSize(R.styleable.banner_view_bottomLayoutPaddingTop, dp2px(DEFAULT_BG_PADDING_TOP_BOTTOM));
             int bottomLayoutPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.banner_view_bottomLayoutPaddingBottom, dp2px(DEFAULT_BG_PADDING_TOP_BOTTOM));
             typedArray.recycle();
+
+            // 如果没有设置过点的颜色，给一个默认颜色的ColorDrawable
+            if (mPointDefaultDrawable == null) {
+                mPointDefaultDrawable = new ColorDrawable(DEFAULT_POINT_COLOR);
+            }
+            if (mPointSelectDrawable == null) {
+                mPointSelectDrawable = new ColorDrawable(DEFAULT_POINT_SELECT_COLOR);
+            }
 
             // 指示点的控件设置属性
             RelativeLayout.LayoutParams pointParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -154,7 +158,7 @@ public class BannerView extends RelativeLayout {
     /**
      * 获取位置信息
      *
-     * @return
+     * @return 根据int值返回位置
      */
     private int getGravity(int gravity) {
         return gravity == -1 ? ALIGN_PARENT_LEFT : gravity == 0 ? CENTER_HORIZONTAL : gravity == 1 ? ALIGN_PARENT_RIGHT : ALIGN_PARENT_LEFT;
@@ -167,17 +171,37 @@ public class BannerView extends RelativeLayout {
      */
     public void setAdapter(BannerBaseAdapter adapter) {
         this.mAdapter = adapter;
-        mBannerVp.setAdapter(adapter);
-        mBannerVp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mBannerVp.post(new Runnable() {
             @Override
-            public void onPageSelected(int position) {
-                int index = position % mAdapter.getCount();
-                refreshDesc(index);
-                refreshPoint(index);
+            public void run() {
+                mBannerVp.setAdapter(mAdapter);
+                mBannerVp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        int index = position % mAdapter.getCount();
+                        refreshDesc(index);
+                        refreshPoint(index);
+                    }
+                });
+                initPoints();
+                refreshDesc(0);
+                initHeight();
             }
         });
-        initPoints();
-        refreshDesc(0);
+    }
+
+    /**
+     * 根据宽高比例来动态设置高度
+     */
+    private void initHeight() {
+        // 如果有设置宽高比例,则根据宽度去动态设置高度
+        if (mHeightProportion != 0 && mWidthProportion != 0) {
+            int width = getMeasuredWidth();
+            int height = (int) (width * mHeightProportion / mWidthProportion);
+            ViewGroup.LayoutParams params = getLayoutParams();
+            params.height = height;
+            setLayoutParams(params);
+        }
     }
 
     /**

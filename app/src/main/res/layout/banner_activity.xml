@@ -5,33 +5,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.dengzi.bannerlib.BannerView
+    <!--<com.dengzi.bannerlib.BannerView
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        app:widthProportion="5"
+        app:heightProportion="3"
+
+        android:layout_height="150dp" />-->
 
 
     <com.dengzi.bannerlib.BannerView
         android:id="@+id/banner_view1"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
         android:layout_marginTop="50dp"
 
         app:bottomLayoutBackGroundColor="#88000000"
         app:bottomLayoutPaddingBottom="8dp"
+
         app:bottomLayoutPaddingLeft="15dp"
         app:bottomLayoutPaddingRight="15dp"
         app:bottomLayoutPaddingTop="8dp"
+        app:descTextColor="#ffffff"
+        app:descTextGravity="left"
 
-        app:descTextColor="#ff00ff"
-        app:descTextGravity="center"
         app:descTextSize="16sp"
-
+        app:heightProportion="3"
         app:pointDefaultDrawable="#ddffff"
+
         app:pointDistance="15dp"
-        app:pointGravity="left"
+        app:pointGravity="right"
         app:pointSelectDrawable="#ffff00"
-        app:pointSize="6dp" />
+        app:pointSize="6dp"
+        app:widthProportion="5" />
+
+    <!--<com.dengzi.bannerlib.BannerViewPager
+        android:id="@+id/bvp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#ff0022">
+
+    </com.dengzi.bannerlib.BannerViewPager>-->
 
 
 </LinearLayout>
