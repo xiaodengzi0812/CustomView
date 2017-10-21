@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CustomView.iml" filepath="$PROJECT_DIR$/CustomView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bannerlib/bannerlib.iml" filepath="$PROJECT_DIR$/bannerlib/bannerlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/itemview/itemview.iml" filepath="$PROJECT_DIR$/itemview/itemview.iml" />
       <module fileurl="file://$PROJECT_DIR$/lettersidebar/lettersidebar.iml" filepath="$PROJECT_DIR$/lettersidebar/lettersidebar.iml" />
       <module fileurl="file://$PROJECT_DIR$/loading/loading.iml" filepath="$PROJECT_DIR$/loading/loading.iml" />
@@ -18,7 +19,9 @@
       <module fileurl="file://$PROJECT_DIR$/taglayout/taglayout.iml" filepath="$PROJECT_DIR$/taglayout/taglayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/togglebtn/togglebtn.iml" filepath="$PROJECT_DIR$/togglebtn/togglebtn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/topbarlib/topbarlib.iml" filepath="$PROJECT_DIR$/topbarlib/topbarlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/trackcolor/trackcolor.iml" filepath="$PROJECT_DIR$/trackcolor/trackcolor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewpager/viewpager.iml" filepath="$PROJECT_DIR$/viewpager/viewpager.iml" />
     </modules>
   </component>
 </project>

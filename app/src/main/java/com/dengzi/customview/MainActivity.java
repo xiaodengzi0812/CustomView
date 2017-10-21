@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.dengzi.customview.VerticalViewPager.VerticalVpActivity;
+import com.dengzi.customview.banner.BannerActivity;
 import com.dengzi.customview.draw.DrawActivity;
 import com.dengzi.customview.materialdesign.MDActivity;
 import com.dengzi.customview.mybehavior.BehaviorMainActivity;
@@ -125,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void parallaxClick(View view) {
         startActivity(new Intent(MainActivity.this, ParallaxActivity.class));
+    }
+
+    public void verticalVpClick(View view) {
+        startActivity(new Intent(MainActivity.this, VerticalVpActivity.class));
+    }
+
+    public void topbarClick(View view) {
+        startActivity(new Intent(MainActivity.this, TopBarActivity.class));
+    }
+    public void bannerClick(View view) {
+        startActivity(new Intent(MainActivity.this, BannerActivity.class));
     }
 
 }

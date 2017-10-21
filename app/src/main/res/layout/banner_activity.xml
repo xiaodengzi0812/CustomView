@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.dengzi.bannerlib.BannerView
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+
+    <com.dengzi.bannerlib.BannerView
+        android:id="@+id/banner_view1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+
+        app:bottomLayoutBackGroundColor="#88000000"
+        app:bottomLayoutPaddingBottom="8dp"
+        app:bottomLayoutPaddingLeft="15dp"
+        app:bottomLayoutPaddingRight="15dp"
+        app:bottomLayoutPaddingTop="8dp"
+
+        app:descTextColor="#ff00ff"
+        app:descTextGravity="center"
+        app:descTextSize="16sp"
+
+        app:pointDefaultDrawable="#ddffff"
+        app:pointDistance="15dp"
+        app:pointGravity="left"
+        app:pointSelectDrawable="#ffff00"
+        app:pointSize="6dp" />
+
+
+</LinearLayout>

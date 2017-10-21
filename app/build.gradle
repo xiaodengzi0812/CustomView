@@ -39,4 +39,7 @@ dependencies {
     compile project(':msgbubble')
     compile project(':love')
     compile project(':parallax')
+    compile project(':viewpager')
+    compile project(':topbarlib')
+    compile project(':bannerlib')
 }
