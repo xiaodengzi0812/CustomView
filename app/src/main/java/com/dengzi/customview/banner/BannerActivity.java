@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.dengzi.bannerlib.BannerBaseAdapter;
 import com.dengzi.bannerlib.BannerView;
@@ -30,68 +31,50 @@ public class BannerActivity extends AppCompatActivity {
     private BannerView mBannerView1;
     private List<BannerBean> mDataList = new ArrayList<>();
 
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.banner_activity);
         initData();
-//        initBanner();
+        initBanner();
         initBanner1();
-//        initBvp();
-    }
-
-    private void initBvp() {
-//        final BannerViewPager bvp = (BannerViewPager) findViewById(R.id.bvp);
-//
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                bvp.setAdapter(new BannerBaseAdapter() {
-//                    @Override
-//                    public int getCount() {
-//                        return mDataList.size();
-//                    }
-//
-//                    @Override
-//                    public View getView(ViewGroup parentView, int position) {
-//                        View view = LayoutInflater.from(BannerActivity.this).inflate(R.layout.banner_item, parentView, false);
-//                        ImageView iv = (ImageView) view.findViewById(R.id.iv);
-//                        iv.setBackgroundResource(mDataList.get(position).getImageRes());
-//                        return view;
-//                    }
-//
-//                    @Override
-//                    public String getDescTitle(int position) {
-//                        return mDataList.get(position).getDescText();
-//                    }
-//
-//                });
-//
-//                bvp.startScroll();
-//            }
-//        }, 2000);
     }
 
     /**
-     * 初始化一个默认banner
+     * 初始化一个基础的banner
      */
     private void initBanner() {
-//        mBannerView = (BannerView) findViewById(R.id.banner_view);
-//        mBannerView.setAdapter(new BannerBaseAdapter() {
-//            @Override
-//            public int getCount() {
-//                return mDataList.size();
-//            }
-//
-//            @Override
-//            public View getView(ViewGroup parentView, int position) {
-//                View view = LayoutInflater.from(BannerActivity.this).inflate(R.layout.banner_item, parentView, false);
-//                ImageView iv = (ImageView) view.findViewById(R.id.iv);
-//                iv.setBackgroundResource(mDataList.get(position).getImageRes());
-//                return view;
-//            }
-//        });
-//        mBannerView.startScroll();
+        mBannerView = (BannerView) findViewById(R.id.banner_view);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBannerView.setAdapter(new BannerBaseAdapter() {
+                    @Override
+                    public int getCount() {
+                        return mDataList.size();
+                    }
+
+                    @Override
+                    public View getView(final int position, ViewGroup parentView, View reuseView) {
+                        // 如果复用view为null才去创建view，否则使用复用的view
+                        if (reuseView == null) {
+                            reuseView = LayoutInflater.from(BannerActivity.this).inflate(R.layout.banner_item, parentView, false);
+                        }
+                        ImageView iv = (ImageView) reuseView.findViewById(R.id.iv);
+                        iv.setBackgroundResource(mDataList.get(position).getImageRes());
+                        iv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(BannerActivity.this, "click -> " + position, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        return reuseView;
+                    }
+                });
+            }
+        }, 3000);
     }
 
     /**
@@ -106,13 +89,19 @@ public class BannerActivity extends AppCompatActivity {
             }
 
             @Override
-            public View getView(int position, ViewGroup parentView, View reuseView) {
+            public View getView(final int position, ViewGroup parentView, View reuseView) {
                 // 如果复用view为null才去创建view，否则使用复用的view
                 if (reuseView == null) {
                     reuseView = LayoutInflater.from(BannerActivity.this).inflate(R.layout.banner_item, parentView, false);
                 }
                 ImageView iv = (ImageView) reuseView.findViewById(R.id.iv);
                 iv.setBackgroundResource(mDataList.get(position).getImageRes());
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(BannerActivity.this, "click -> " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 return reuseView;
             }
 
@@ -123,15 +112,7 @@ public class BannerActivity extends AppCompatActivity {
 
         });
 
-        mBannerView1.startScroll();
     }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
-        }
-    };
 
     /**
      * 初始化假数据

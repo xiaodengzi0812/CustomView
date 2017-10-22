@@ -8,9 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -125,6 +125,9 @@ public class BannerView extends RelativeLayout {
             int bottomLayoutPaddingRight = typedArray.getDimensionPixelSize(R.styleable.banner_view_bottomLayoutPaddingRight, dp2px(DEFAULT_BG_PADDING_LEFT_RIGHT));
             int bottomLayoutPaddingTop = typedArray.getDimensionPixelSize(R.styleable.banner_view_bottomLayoutPaddingTop, dp2px(DEFAULT_BG_PADDING_TOP_BOTTOM));
             int bottomLayoutPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.banner_view_bottomLayoutPaddingBottom, dp2px(DEFAULT_BG_PADDING_TOP_BOTTOM));
+
+            // 自动滚动
+            boolean autoScroll = typedArray.getBoolean(R.styleable.banner_view_autoScroll, false);
             typedArray.recycle();
 
             // 如果没有设置过点的颜色，给一个默认颜色的ColorDrawable
@@ -152,6 +155,9 @@ public class BannerView extends RelativeLayout {
             // 底部控件设置属性
             mBottomLayout.setBackgroundColor(bottomLayoutBackGroundColor);
             mBottomLayout.setPadding(bottomLayoutPaddingLeft, bottomLayoutPaddingTop, bottomLayoutPaddingRight, bottomLayoutPaddingBottom);
+
+            // 自动滚动
+            mBannerVp.setAutoScroll(autoScroll);
         }
     }
 
@@ -170,6 +176,9 @@ public class BannerView extends RelativeLayout {
      * @param adapter
      */
     public void setAdapter(BannerBaseAdapter adapter) {
+        if (mAdapter != null) {
+            throw new NullPointerException("setAdapter is just can set one time!");
+        }
         this.mAdapter = adapter;
         mBannerVp.post(new Runnable() {
             @Override
@@ -186,6 +195,7 @@ public class BannerView extends RelativeLayout {
                 initPoints();
                 refreshDesc(0);
                 initHeight();
+                mBannerVp.startAutoScroll();
             }
         });
     }
@@ -205,17 +215,19 @@ public class BannerView extends RelativeLayout {
     }
 
     /**
-     * 开始滚动
-     */
-    public void startScroll() {
-        mBannerVp.startScroll();
-    }
-
-    /**
      * 隐藏点
      */
     public void dismissPointView() {
         mPointsLl.setVisibility(View.GONE);
+    }
+
+    /**
+     * 设置多长时间滚动一次
+     *
+     * @param delayedTime
+     */
+    public void setDelayedTime(int delayedTime) {
+        mBannerVp.setDelayedTime(delayedTime);
     }
 
     /**
@@ -271,7 +283,7 @@ public class BannerView extends RelativeLayout {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public int sp2px(final float spValue) {
+    private int sp2px(final float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getResources().getDisplayMetrics());
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
@@ -32,15 +33,21 @@ public class BannerViewPager extends ViewPager {
     private BannerScroller mScroller;
     // view的复用集合
     private List<View> mReuseViewList = new ArrayList<>();
+    // 自动滚动
+    private boolean mAutoScroll = false;
+    // 是否为用户touch事件
+    private boolean mIsUserTouch = false;
 
     // 用Handler来实现无限滚动
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            // 设置滚动到下一页
-            setCurrentItem(getCurrentItem() + 1);
-            // 再次开启滚动
-            startScroll();
+            if (mAutoScroll) {
+                // 设置滚动到下一页
+                setCurrentItem(getCurrentItem() + 1);
+                // 再次开启滚动
+                startAutoScroll();
+            }
         }
     };
 
@@ -91,10 +98,18 @@ public class BannerViewPager extends ViewPager {
     }
 
     /**
+     * 设置自动滚动
+     */
+    public void setAutoScroll(boolean autoScroll) {
+        this.mAutoScroll = autoScroll;
+    }
+
+    /**
      * 开始滚动
      */
-    public void startScroll() {
-        Log.e("dengzi", "startScroll");
+    public void startAutoScroll() {
+        Log.e("dengzi", "startAutoScroll");
+        if (!mAutoScroll) return;
         mHandler.removeMessages(HANDLER_MSG);
         mHandler.sendEmptyMessageDelayed(HANDLER_MSG, mDelayedTime);
     }
@@ -106,6 +121,30 @@ public class BannerViewPager extends ViewPager {
      */
     public void setDelayedTime(int delayedTime) {
         this.mDelayedTime = delayedTime;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        setUserTouch(ev.getAction());
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 用户触摸屏幕事件，解决用户滑动过程中还自动滑动
+     */
+    public void setUserTouch(int MotionAction) {
+        // 如果不自动滑动，则不关心这个事件
+        if (!mAutoScroll) return;
+        switch (MotionAction) {
+            // down事件的时候，清空handler内的待待消息
+            case MotionEvent.ACTION_DOWN:
+                mHandler.removeMessages(HANDLER_MSG);
+                break;
+            // up事件的时候，继续自动滚动
+            case MotionEvent.ACTION_UP:
+                startAutoScroll();
+                break;
+        }
     }
 
     private PagerAdapter mPageAdapter = new PagerAdapter() {

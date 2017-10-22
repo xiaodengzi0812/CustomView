@@ -43,6 +43,9 @@
         <attr name="heightProportion" format="float" />
         <attr name="widthProportion" format="float" />
 
+        <!--是否自动滚动（默认不滚动）-->
+        <attr name="autoScroll" format="boolean" />
+
     </declare-styleable>
 
 </resources>
