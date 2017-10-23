@@ -40,5 +40,4 @@
         app:pointSize="6dp"
         app:widthProportion="5" />
 
-
 </LinearLayout>

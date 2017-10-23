@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -83,14 +82,25 @@ public class BannerViewPager extends ViewPager {
      * 开始滚动
      */
     public void startAutoScroll() {
-//        Log.e("dengzi", "startAutoScroll");
         // 如果banner位只有一个图片，则不滚动
         if (mChildCount < 2) {
             mAutoScroll = false;
         }
+        // 如果设置不自动滚动，直接reture
         if (!mAutoScroll) return;
+        // 清除所有的等待队列
         mHandler.removeMessages(HANDLER_MSG);
+        // 延时发送消息
         mHandler.sendEmptyMessageDelayed(HANDLER_MSG, mDelayedTime);
+    }
+
+    /**
+     * 暂停滚动(当前焦点不在当前view的时候，就是暂停滚动，解决内存溢出)
+     */
+    public void pauseAutoScroll() {
+        if (!mAutoScroll) return;
+        // 清除所有的等待队列
+        mHandler.removeMessages(HANDLER_MSG);
     }
 
     /**
@@ -156,6 +166,25 @@ public class BannerViewPager extends ViewPager {
             case MotionEvent.ACTION_UP:
                 startAutoScroll();
                 break;
+        }
+    }
+
+    /**
+     * 监听生命周期，当焦点不在当前activity时，我们就取消自动滚动事件
+     *
+     * @param hasWindowFocus
+     */
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+
+        if (mChildCount != 0) {
+            // 获取焦点
+            if (hasWindowFocus) {
+                startAutoScroll();
+            } else {
+                pauseAutoScroll();
+            }
         }
     }
 
