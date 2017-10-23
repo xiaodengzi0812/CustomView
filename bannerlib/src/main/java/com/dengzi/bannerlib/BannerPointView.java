@@ -9,6 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -38,6 +39,7 @@ public class BannerPointView extends View {
         Bitmap drawableBitmap = getBitmapFromDrawable(mDrawable);
         Bitmap circleBitmap = getCilcleBitmap(drawableBitmap);
         canvas.drawBitmap(circleBitmap, 0, 0, null);
+        circleBitmap.recycle();
     }
 
     /**
@@ -62,6 +64,7 @@ public class BannerPointView extends View {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         // 再将传来的drawableBitmap画到圆形的cilcleBitmap中，这时画出来的就是他们的交集，就是一个圆形的Bitmap
         canvas.drawBitmap(drawableBitmap, 0, 0, paint);
+        drawableBitmap.recycle();
         return cilcleBitmap;
     }
 

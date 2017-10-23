@@ -6,13 +6,13 @@ import android.widget.Scroller;
 
 /**
  * @author Djk
- * @Title:
+ * @Title: 自定义一个Scroller，自定义滑动时间，用来解决viewpager滑动太快的问题
  * @Time: 2017/10/19.
  * @Version:1.0.0
  */
 public class BannerScroller extends Scroller {
     // 滑动切换持续的时间
-    private int mScrollDuration = 1000;
+    private int mScrollDuration = 1200;
 
     public BannerScroller(Context context) {
         super(context);

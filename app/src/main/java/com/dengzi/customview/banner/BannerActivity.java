@@ -2,19 +2,18 @@ package com.dengzi.customview.banner;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dengzi.bannerlib.BannerBaseAdapter;
 import com.dengzi.bannerlib.BannerView;
-import com.dengzi.bannerlib.BannerViewPager;
 import com.dengzi.customview.R;
 
 import java.util.ArrayList;
@@ -31,8 +30,6 @@ public class BannerActivity extends AppCompatActivity {
     private BannerView mBannerView1;
     private List<BannerBean> mDataList = new ArrayList<>();
 
-    private Handler mHandler = new Handler();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,34 +44,29 @@ public class BannerActivity extends AppCompatActivity {
      */
     private void initBanner() {
         mBannerView = (BannerView) findViewById(R.id.banner_view);
-        mHandler.postDelayed(new Runnable() {
+        mBannerView.setAdapter(new BannerBaseAdapter() {
             @Override
-            public void run() {
-                mBannerView.setAdapter(new BannerBaseAdapter() {
-                    @Override
-                    public int getCount() {
-                        return mDataList.size();
-                    }
+            public int getCount() {
+                return mDataList.size();
+            }
 
+            @Override
+            public View getView(final int position, ViewGroup parentView, View reuseView) {
+                // 如果复用view为null才去创建view，否则使用复用的view
+                if (reuseView == null) {
+                    reuseView = LayoutInflater.from(BannerActivity.this).inflate(R.layout.banner_item, parentView, false);
+                }
+                ImageView iv = (ImageView) reuseView.findViewById(R.id.iv);
+                iv.setBackgroundResource(mDataList.get(position).getImageRes());
+                iv.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public View getView(final int position, ViewGroup parentView, View reuseView) {
-                        // 如果复用view为null才去创建view，否则使用复用的view
-                        if (reuseView == null) {
-                            reuseView = LayoutInflater.from(BannerActivity.this).inflate(R.layout.banner_item, parentView, false);
-                        }
-                        ImageView iv = (ImageView) reuseView.findViewById(R.id.iv);
-                        iv.setBackgroundResource(mDataList.get(position).getImageRes());
-                        iv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(BannerActivity.this, "click -> " + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        return reuseView;
+                    public void onClick(View v) {
+                        Toast.makeText(BannerActivity.this, "click -> " + position, Toast.LENGTH_SHORT).show();
                     }
                 });
+                return reuseView;
             }
-        }, 3000);
+        });
     }
 
     /**
@@ -82,6 +74,8 @@ public class BannerActivity extends AppCompatActivity {
      */
     private void initBanner1() {
         mBannerView1 = (BannerView) findViewById(R.id.banner_view1);
+        // 设置一个奇葩的差值器
+        mBannerView1.setScrollInterpolator(new BounceInterpolator());
         mBannerView1.setAdapter(new BannerBaseAdapter() {
             @Override
             public int getCount() {
@@ -109,9 +103,7 @@ public class BannerActivity extends AppCompatActivity {
             public String getDescTitle(int position) {
                 return mDataList.get(position).getDescText();
             }
-
         });
-
     }
 
     /**

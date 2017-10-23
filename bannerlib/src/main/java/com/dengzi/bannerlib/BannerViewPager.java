@@ -3,18 +3,14 @@ package com.dengzi.bannerlib;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Djk
@@ -24,19 +20,19 @@ import java.util.List;
  */
 public class BannerViewPager extends ViewPager {
     private Context mContext;
-    private BannerBaseAdapter mAdapter;
-
+    // 子类个数
+    private int mChildCount = 0;
     private final int HANDLER_MSG = 0x0011;
     // 延时滚动的时间
-    private int mDelayedTime = 3000;
+    private int mDelayedTime = 3600;
+    // 滚动动画执行的时间
+    private int mDurationTime = 1200;
+    // 滚动动画差值器(默认差值器：在动画开始与结束的地方速率改变比较慢，在中间的时候加速)
+    private Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     // 自定义Scroller，为了解决滑动太快的问题
     private BannerScroller mScroller;
-    // view的复用集合
-    private List<View> mReuseViewList = new ArrayList<>();
     // 自动滚动
     private boolean mAutoScroll = false;
-    // 是否为用户touch事件
-    private boolean mIsUserTouch = false;
 
     // 用Handler来实现无限滚动
     private Handler mHandler = new Handler() {
@@ -58,30 +54,6 @@ public class BannerViewPager extends ViewPager {
     public BannerViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        setScroller();
-    }
-
-    /**
-     * 初始化滑动减速
-     */
-    private void setScroller() {
-        // 解决滑动太快的问题，通过反射获取ViewPager的mScroller类，然后将我们自定义的BannerScroller设置给ViewPager
-        try {
-            mScroller = new BannerScroller(mContext, new BounceInterpolator());
-            Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
-            scrollerField.setAccessible(true);
-            scrollerField.set(this, mScroller);
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 设置滑动切换持续的时间
-     *
-     * @param scrollDurationTime
-     */
-    public void setScrollDurationTime(int scrollDurationTime) {
-        this.mScroller.setScrollDurationTime(scrollDurationTime);
     }
 
     /**
@@ -90,11 +62,14 @@ public class BannerViewPager extends ViewPager {
      * @param adapter
      */
     public void setAdapter(BannerBaseAdapter adapter) {
-        this.mAdapter = adapter;
-        setAdapter(mPageAdapter);
+        mChildCount = adapter.getCount();
+        setScroller();
+        setAdapter(new CommonPagerAdapter(adapter));
         // 设置当前位置是轮播个数的100倍，这个值是随便写的，也没人会真的向后方向滑动100页吧？
         // 本来是想设置成 Integer.MAX_VALUE / 2 这个值的，但是设置这个值后启动的时候会有白屏
-        setCurrentItem(mAdapter.getCount() * 100);
+        if (mChildCount > 1) {
+            setCurrentItem(mChildCount * 100);
+        }
     }
 
     /**
@@ -108,7 +83,11 @@ public class BannerViewPager extends ViewPager {
      * 开始滚动
      */
     public void startAutoScroll() {
-        Log.e("dengzi", "startAutoScroll");
+//        Log.e("dengzi", "startAutoScroll");
+        // 如果banner位只有一个图片，则不滚动
+        if (mChildCount < 2) {
+            mAutoScroll = false;
+        }
         if (!mAutoScroll) return;
         mHandler.removeMessages(HANDLER_MSG);
         mHandler.sendEmptyMessageDelayed(HANDLER_MSG, mDelayedTime);
@@ -119,8 +98,41 @@ public class BannerViewPager extends ViewPager {
      *
      * @param delayedTime
      */
-    public void setDelayedTime(int delayedTime) {
+    public void setScrollDelayedTime(int delayedTime) {
         this.mDelayedTime = delayedTime;
+    }
+
+    /**
+     * 设置滑动切换持续的时间
+     *
+     * @param scrollDurationTime
+     */
+    public void setScrollDurationTime(int scrollDurationTime) {
+        this.mDurationTime = scrollDurationTime;
+    }
+
+    /**
+     * 设置滑动动画执行的差值器
+     *
+     * @param interpolator
+     */
+    public void setScrollInterpolator(Interpolator interpolator) {
+        this.mInterpolator = interpolator;
+    }
+
+    /**
+     * 初始化滑动减速
+     */
+    private void setScroller() {
+        // 解决滑动太快的问题，通过反射获取ViewPager的mScroller类，然后将我们自定义的BannerScroller设置给ViewPager
+        try {
+            mScroller = new BannerScroller(mContext, mInterpolator);
+            mScroller.setScrollDurationTime(mDurationTime);
+            Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
+            scrollerField.setAccessible(true);
+            scrollerField.set(this, mScroller);
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -145,51 +157,6 @@ public class BannerViewPager extends ViewPager {
                 startAutoScroll();
                 break;
         }
-    }
-
-    private PagerAdapter mPageAdapter = new PagerAdapter() {
-        @Override
-        public int getCount() {
-            return Integer.MAX_VALUE;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            int index = position % mAdapter.getCount();
-            View itemView = mAdapter.getView(index, container, getReuseView());
-            container.addView(itemView);
-            // 创建itemview
-            return itemView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            // 销毁itemview
-            View view = (View) object;
-            container.removeView(view);
-            // 在销毁的时候，把view缓存起来，传给下一个要显示的view去复用
-            // 判断一下view是否存在，要不然会加好多相同的view
-            if (!mReuseViewList.contains(view)) {
-                mReuseViewList.add(view);
-            }
-        }
-    };
-
-    /**
-     * 获取可复用的view
-     */
-    private View getReuseView() {
-        for (View view : mReuseViewList) {
-            if (view.getParent() == null) {
-                return view;
-            }
-        }
-        return null;
     }
 
     /**

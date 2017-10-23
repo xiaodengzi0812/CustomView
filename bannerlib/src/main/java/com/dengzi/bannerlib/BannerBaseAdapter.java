@@ -9,7 +9,6 @@ import android.view.ViewGroup;
  * @Time: 2017/10/19.
  * @Version:1.0.0
  */
-
 public abstract class BannerBaseAdapter {
 
     /**

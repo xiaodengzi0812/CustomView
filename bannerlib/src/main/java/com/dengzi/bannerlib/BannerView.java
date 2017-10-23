@@ -5,14 +5,16 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -61,7 +63,7 @@ public class BannerView extends RelativeLayout {
     public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-        addView(LayoutInflater.from(context).inflate(R.layout.banner_view, this, false));
+        LayoutInflater.from(context).inflate(R.layout.banner_view, this);
         initView();
         initAttrs(attrs);
     }
@@ -175,9 +177,14 @@ public class BannerView extends RelativeLayout {
      *
      * @param adapter
      */
-    public void setAdapter(BannerBaseAdapter adapter) {
+    public void setAdapter(@NonNull BannerBaseAdapter adapter) {
+        // setAdapter只能调用一次
         if (mAdapter != null) {
             throw new NullPointerException("setAdapter is just can set one time!");
+        }
+        // adapte不可以为null
+        if (adapter == null) {
+            throw new NullPointerException("adapter can not be null!");
         }
         this.mAdapter = adapter;
         mBannerVp.post(new Runnable() {
@@ -193,8 +200,8 @@ public class BannerView extends RelativeLayout {
                     }
                 });
                 initPoints();
-                refreshDesc(0);
                 initHeight();
+                refreshDesc(0);
                 mBannerVp.startAutoScroll();
             }
         });
@@ -226,8 +233,26 @@ public class BannerView extends RelativeLayout {
      *
      * @param delayedTime
      */
-    public void setDelayedTime(int delayedTime) {
-        mBannerVp.setDelayedTime(delayedTime);
+    public void setScrollDelayedTime(int delayedTime) {
+        mBannerVp.setScrollDelayedTime(delayedTime);
+    }
+
+    /**
+     * 设置滑动切换持续的时间
+     *
+     * @param durationTime
+     */
+    public void setScrollDurationTime(int durationTime) {
+        mBannerVp.setScrollDurationTime(durationTime);
+    }
+
+    /**
+     * 设置滑动动画执行的差值器
+     *
+     * @param interpolator
+     */
+    public void setScrollInterpolator(Interpolator interpolator) {
+        mBannerVp.setScrollInterpolator(interpolator);
     }
 
     /**
