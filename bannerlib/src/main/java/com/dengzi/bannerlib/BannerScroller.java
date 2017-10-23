@@ -12,7 +12,7 @@ import android.widget.Scroller;
  */
 public class BannerScroller extends Scroller {
     // 滑动切换持续的时间
-    private int mScrollDuration = 1200;
+    public int mScrollDuration = 500;
 
     public BannerScroller(Context context) {
         super(context);
@@ -37,6 +37,8 @@ public class BannerScroller extends Scroller {
      * @param scrollDurationTime
      */
     public void setScrollDurationTime(int scrollDurationTime) {
-        this.mScrollDuration = scrollDurationTime;
+        if (scrollDurationTime > 0) {
+            this.mScrollDuration = scrollDurationTime;
+        }
     }
 }

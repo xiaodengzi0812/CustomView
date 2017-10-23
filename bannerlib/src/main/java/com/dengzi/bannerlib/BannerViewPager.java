@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import java.lang.reflect.Field;
@@ -25,9 +24,9 @@ public class BannerViewPager extends ViewPager {
     // 延时滚动的时间
     private int mDelayedTime = 3600;
     // 滚动动画执行的时间
-    private int mDurationTime = 1200;
-    // 滚动动画差值器(默认差值器：在动画开始与结束的地方速率改变比较慢，在中间的时候加速)
-    private Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+    private int mDurationTime;
+    // 滚动动画差值器
+    private Interpolator mInterpolator = null;
     // 自定义Scroller，为了解决滑动太快的问题
     private BannerScroller mScroller;
     // 自动滚动

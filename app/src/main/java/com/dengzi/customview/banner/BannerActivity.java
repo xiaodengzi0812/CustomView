@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -71,8 +71,8 @@ public class BannerActivity extends AppCompatActivity {
      */
     private void initBanner1() {
         mBannerView1 = (BannerView) findViewById(R.id.banner_view1);
-        // 设置一个奇葩的差值器
-        mBannerView1.setScrollInterpolator(new BounceInterpolator());
+        // 设置一个差值器
+        mBannerView1.setScrollInterpolator(new AccelerateDecelerateInterpolator());
         mBannerView1.setAdapter(new BannerBaseAdapter() {
             @Override
             public int getCount() {
