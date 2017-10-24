@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.dengzi.bannerlib.BannerBaseAdapter;
 import com.dengzi.bannerlib.BannerView;
+import com.dengzi.bannerlib.OnBannerItemClickListener;
 import com.dengzi.customview.R;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class BannerActivity extends AppCompatActivity {
                 }
                 ImageView iv = (ImageView) reuseView.findViewById(R.id.iv);
                 iv.setBackgroundResource(mDataList.get(position).getImageRes());
+                // 设置点击事件
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -73,6 +75,13 @@ public class BannerActivity extends AppCompatActivity {
         mBannerView1 = (BannerView) findViewById(R.id.banner_view1);
         // 设置一个差值器
         mBannerView1.setScrollInterpolator(new AccelerateDecelerateInterpolator());
+        // 设置点击事件
+        mBannerView1.setOnBannerItemClickListener(new OnBannerItemClickListener() {
+            @Override
+            public void onBannerItemClick(int position) {
+                Toast.makeText(BannerActivity.this, "click -> " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         mBannerView1.setAdapter(new BannerBaseAdapter() {
             @Override
             public int getCount() {
@@ -87,12 +96,6 @@ public class BannerActivity extends AppCompatActivity {
                 }
                 ImageView iv = (ImageView) reuseView.findViewById(R.id.iv);
                 iv.setBackgroundResource(mDataList.get(position).getImageRes());
-                iv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(BannerActivity.this, "click -> " + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
                 return reuseView;
             }
 
@@ -101,6 +104,7 @@ public class BannerActivity extends AppCompatActivity {
                 return mDataList.get(position).getDescText();
             }
         });
+
     }
 
     /**

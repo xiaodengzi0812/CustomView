@@ -31,6 +31,10 @@ public class BannerViewPager extends ViewPager {
     private BannerScroller mScroller;
     // 自动滚动
     private boolean mAutoScroll = false;
+    // PagerAdapter
+    private CommonPagerAdapter mPagerAdapter;
+    //点击事件
+    private OnBannerItemClickListener mBannerItemClickListener;
 
     // 用Handler来实现无限滚动
     private Handler mHandler = new Handler() {
@@ -62,7 +66,9 @@ public class BannerViewPager extends ViewPager {
     public void setAdapter(BannerBaseAdapter adapter) {
         mChildCount = adapter.getCount();
         setScroller();
-        setAdapter(new CommonPagerAdapter(adapter));
+        mPagerAdapter = new CommonPagerAdapter(adapter);
+        setAdapter(mPagerAdapter);
+        initItemListener();
         // 设置当前位置是轮播个数的100倍，这个值是随便写的，也没人会真的向后方向滑动100页吧？
         // 本来是想设置成 Integer.MAX_VALUE / 2 这个值的，但是设置这个值后启动的时候会有白屏
         if (mChildCount > 1) {
@@ -195,5 +201,22 @@ public class BannerViewPager extends ViewPager {
         super.onDetachedFromWindow();
         mHandler.removeMessages(HANDLER_MSG);
         mHandler = null;
+    }
+
+    /**
+     * 设置点击事件
+     */
+    public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
+        this.mBannerItemClickListener = bannerItemClickListener;
+        initItemListener();
+    }
+
+    /**
+     * 初始化点击事件
+     */
+    private void initItemListener() {
+        if (mPagerAdapter != null && mBannerItemClickListener != null) {
+            mPagerAdapter.setOnBannerItemClickListener(mBannerItemClickListener);
+        }
     }
 }

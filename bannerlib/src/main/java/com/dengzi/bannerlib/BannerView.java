@@ -302,6 +302,13 @@ public class BannerView extends RelativeLayout {
         }
     }
 
+    /**
+     * 设置点击事件
+     */
+    public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
+        mBannerVp.setOnBannerItemClickListener(bannerItemClickListener);
+    }
+
     private int dp2px(final float dpValue) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
@@ -310,4 +317,5 @@ public class BannerView extends RelativeLayout {
     private int sp2px(final float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getResources().getDisplayMetrics());
     }
+
 }

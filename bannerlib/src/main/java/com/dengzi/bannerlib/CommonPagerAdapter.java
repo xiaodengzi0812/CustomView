@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author Djk
- * @Title:
+ * @Title: PagerAdapter的一个普通类，如果以后有什么特殊需求可以在这里修改
  * @Time: 2017/10/23.
  * @Version:1.0.0
  */
@@ -18,6 +18,8 @@ public class CommonPagerAdapter extends PagerAdapter {
     private List<View> mReuseViewList = new ArrayList<>();
     // 设置的BannerBaseAdapter
     private BannerBaseAdapter mAdapter;
+    // item点击事件
+    private OnBannerItemClickListener mBannerItemClickListener;
 
     public CommonPagerAdapter(BannerBaseAdapter mAdapter) {
         this.mAdapter = mAdapter;
@@ -41,6 +43,7 @@ public class CommonPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         int index = position % mAdapter.getCount();
         View itemView = mAdapter.getView(index, container, getReuseView());
+        initListener(itemView, index);
         container.addView(itemView);
         // 创建itemview
         return itemView;
@@ -68,5 +71,26 @@ public class CommonPagerAdapter extends PagerAdapter {
             }
         }
         return null;
+    }
+
+    /**
+     * 初始化点击事件
+     */
+    private void initListener(View view, final int position) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBannerItemClickListener != null) {
+                    mBannerItemClickListener.onBannerItemClick(position);
+                }
+            }
+        });
+    }
+
+    /**
+     * 设置点击事件
+     */
+    public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
+        this.mBannerItemClickListener = bannerItemClickListener;
     }
 }
