@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_view"
+        layout="@layout/top_view" />
+
+    <include
+        android:id="@+id/bottom_view"
+        layout="@layout/bottom_view" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/image_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_view"
+        android:layout_below="@+id/top_view"
+        android:background="#272828"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:scrollbars="vertical" />
+
+    <View
+        android:id="@+id/masking_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/image_recycler"
+        android:layout_alignTop="@id/image_recycler"
+        android:background="#c4111212"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/folder_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/image_recycler"
+        android:layout_alignTop="@id/image_recycler"
+        android:layout_marginTop="80dp"
+        android:background="@android:color/white"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
+
+</RelativeLayout>

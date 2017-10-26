@@ -42,4 +42,5 @@ dependencies {
     compile project(':viewpager')
     compile project(':topbarlib')
     compile project(':bannerlib')
+    compile project(':imageselector')
 }

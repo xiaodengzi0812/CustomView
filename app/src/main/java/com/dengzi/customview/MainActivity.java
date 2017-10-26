@@ -8,6 +8,7 @@ import android.view.View;
 import com.dengzi.customview.VerticalViewPager.VerticalVpActivity;
 import com.dengzi.customview.banner.BannerActivity;
 import com.dengzi.customview.draw.DrawActivity;
+import com.dengzi.customview.imageselector.ImageSelectorActivity;
 import com.dengzi.customview.materialdesign.MDActivity;
 import com.dengzi.customview.mybehavior.BehaviorMainActivity;
 import com.dengzi.customview.parallax.ParallaxActivity;
@@ -136,8 +137,13 @@ public class MainActivity extends AppCompatActivity {
     public void topbarClick(View view) {
         startActivity(new Intent(MainActivity.this, TopBarActivity.class));
     }
+
     public void bannerClick(View view) {
         startActivity(new Intent(MainActivity.this, BannerActivity.class));
+    }
+
+    public void imageSelectorClick(View view) {
+        startActivity(new Intent(MainActivity.this, ImageSelectorActivity.class));
     }
 
 }
