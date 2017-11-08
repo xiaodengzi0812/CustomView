@@ -20,12 +20,12 @@ import android.widget.TextView;
  */
 public abstract class AbsTopBar<E extends AbsParams> implements ITopBar {
     // 参数
-    protected E params;
+    protected E mParams;
     // topbar的真正view
-    private View topbarView;
+    private View mTopbarView;
 
     protected AbsTopBar(E params) {
-        this.params = params;
+        this.mParams = params;
         creatAndBindView();
     }
 
@@ -34,35 +34,46 @@ public abstract class AbsTopBar<E extends AbsParams> implements ITopBar {
      */
     protected void creatAndBindView() {
         // 如果父类为null，则去拿系统的父类
-        if (params.parentView == null) {
-            ViewGroup parentFramelayoutView = (ViewGroup) ((Activity) params.context).findViewById(android.R.id.content);
+        View contentView = null;
+        if (mParams.parentView == null) {
+            ViewGroup parentFramelayoutView = (ViewGroup) ((Activity) mParams.context).findViewById(android.R.id.content);
             if (parentFramelayoutView == null) {
                 throw new Resources.NotFoundException("parent view can not found!");
             }
-            params.parentView = parentFramelayoutView;
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            lp.topMargin = dp2px(topbarDpHeight());
-            View outView = parentFramelayoutView.getChildAt(0);
-            if (outView == null) {
-                throw new Resources.NotFoundException("your view can not found!");
-            }
-            outView.setLayoutParams(lp);
+            mParams.parentView = parentFramelayoutView;
+            contentView = parentFramelayoutView.getChildAt(0);
         }
         // 如果还是找不到父类控件，则报错
-        if (params.parentView == null) {
+        if (mParams.parentView == null) {
             throw new Resources.NotFoundException("parent view can not found!");
         }
 
         // 也有这种写法，总感觉有问题
-//        if (params.parentView == null) {
-//            ViewGroup viewGroup = (ViewGroup) ((Activity) params.context).getWindow().getDecorView();
-//            params.parentView = (ViewGroup) viewGroup.getChildAt(0);
+//        if (mParams.parentView == null) {
+//            ViewGroup viewGroup = (ViewGroup) ((Activity) mParams.context).getWindow().getDecorView();
+//            mParams.parentView = (ViewGroup) viewGroup.getChildAt(0);
 //        }
 
         // 创建topbar view
-        topbarView = LayoutInflater.from(params.context).inflate(bindLayoutId(), params.parentView, false);
+        mTopbarView = LayoutInflater.from(mParams.context).inflate(bindLayoutId(), mParams.parentView, false);
         // 将创建的topbar添加到父类中
-        params.parentView.addView(topbarView);
+        mParams.parentView.addView(mTopbarView);
+
+        if (contentView != null) {
+            final View finalContentView = contentView;
+            mTopbarView.post(new Runnable() {
+                @Override
+                public void run() {
+                    int height = mTopbarView.getMeasuredHeight();
+                    FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    lp.topMargin = height;
+                    if (finalContentView == null) {
+                        throw new Resources.NotFoundException("your contentView can not found!");
+                    }
+                    finalContentView.setLayoutParams(lp);
+                }
+            });
+        }
         // 去调用子类的设置view的属性
         applyView();
     }
@@ -146,7 +157,7 @@ public abstract class AbsTopBar<E extends AbsParams> implements ITopBar {
             return;
         }
         TextView tv = findViewById(viewId);
-        Drawable drawable = params.context.getResources().getDrawable(iconRes, null);
+        Drawable drawable = mParams.context.getResources().getDrawable(iconRes, null);
         if (tv != null && drawable != null) {
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tv.setCompoundDrawables(drawable, null, null, null);
@@ -197,7 +208,7 @@ public abstract class AbsTopBar<E extends AbsParams> implements ITopBar {
         }
         View view = findViewById(viewId);
         if (view != null) {
-            topbarView.findViewById(viewId).setOnClickListener(listener);
+            mTopbarView.findViewById(viewId).setOnClickListener(listener);
         }
     }
 
@@ -210,7 +221,7 @@ public abstract class AbsTopBar<E extends AbsParams> implements ITopBar {
      * @return
      */
     protected <E extends View> E findViewById(int viewId) {
-        return (E) topbarView.findViewById(viewId);
+        return (E) mTopbarView.findViewById(viewId);
     }
 
     /**
@@ -220,7 +231,7 @@ public abstract class AbsTopBar<E extends AbsParams> implements ITopBar {
      * @return px值
      */
     private int dp2px(final float dpValue) {
-        final float scale = params.context.getResources().getDisplayMetrics().density;
+        final float scale = mParams.context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 }

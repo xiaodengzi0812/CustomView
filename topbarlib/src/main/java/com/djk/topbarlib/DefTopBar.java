@@ -23,14 +23,9 @@ public class DefTopBar extends AbsTopBar {
     }
 
     @Override
-    public int topbarDpHeight() {
-        return 45;
-    }
-
-    @Override
     public void applyView() {
         // 强转成自己的参数bean
-        DefParams dParams = (DefParams) params;
+        DefParams dParams = (DefParams) mParams;
         setBgView(dParams);
         setLeftView(dParams);
         setMiddleView(dParams);
@@ -78,6 +73,11 @@ public class DefTopBar extends AbsTopBar {
         }
 
         // 左text
+        public DefaultBuilder dismissLeftView() {
+            params.leftDismiss = true;
+            return this;
+        }
+
         public DefaultBuilder setLeftText(String text) {
             params.leftText = text;
             return this;
@@ -193,6 +193,7 @@ public class DefTopBar extends AbsTopBar {
     }
 
     private void setLeftView(final DefParams dParams) {
+        if (dParams.leftDismiss) return;
         setText(R.id.left_tv, dParams.leftText);
         setTextSize(R.id.left_tv, dParams.leftTextSize);
         setTextColor(R.id.left_tv, dParams.leftTextColor);

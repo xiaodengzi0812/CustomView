@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.djk.topbarlib.DefTopBar;
+import com.djk.topbarlib.ExpandTopBar;
 
 /**
  * @Title: builder模式创建TopBar
@@ -27,6 +28,7 @@ public class TopBarActivity extends AppCompatActivity {
 
     private void initTitle() {
         new DefTopBar.DefaultBuilder(this, null)
+                .dismissLeftView()
                 .setMiddleText("middle")
                 .setRightIconId(R.drawable.left)
                 .setMiddleClickListener(new View.OnClickListener() {
@@ -41,6 +43,9 @@ public class TopBarActivity extends AppCompatActivity {
                         Toast.makeText(TopBarActivity.this, "right", Toast.LENGTH_SHORT).show();
                     }
                 }).show();
+
+        // 扩展一个的使用方式
+        // new ExpandTopBar.ExpandBuilder(this, null).show();
     }
 
     private void initTitle2() {

@@ -2,7 +2,6 @@ package com.djk.topbarlib;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 /**
@@ -17,6 +16,7 @@ public class DefParams extends AbsParams {
     public int lineHeight, lineColor;
 
     // 左text
+    public boolean leftDismiss;
     public String leftText;
     public int leftIconId, leftTextSize, leftTextColor;
     public View.OnClickListener leftListener;

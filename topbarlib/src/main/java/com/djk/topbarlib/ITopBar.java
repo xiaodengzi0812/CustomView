@@ -18,9 +18,4 @@ public interface ITopBar {
      * 设置view的属性
      */
     void applyView();
-
-    /**
-     * 设置topbar的高度
-     */
-    int topbarDpHeight();
 }
