@@ -52,6 +52,8 @@ public class RecyBaseUseActivity extends AppCompatActivity {
 
         View headerView = LayoutInflater.from(this).inflate(R.layout.recy_header, mRecyclerView, false);
         mRecyclerView.addHeaderView(headerView);
+        View footerView = LayoutInflater.from(this).inflate(R.layout.recy_footer, mRecyclerView, false);
+        mRecyclerView.addFooterView(footerView);
 
         /*添加分格线*/
         mRecyclerView.addItemDecoration(new DefaultItemDecoration(this, R.drawable.list_divider, 1));

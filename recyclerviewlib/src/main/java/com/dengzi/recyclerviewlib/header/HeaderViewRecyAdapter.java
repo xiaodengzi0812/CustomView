@@ -18,14 +18,18 @@ import com.dengzi.recyclerviewlib.adapter.OnItemLongClickListener;
 public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // 列表的Adapter
     private RecyclerView.Adapter mAdapter;
-    // 用来存放底部和头部View的集合  比Map要高效一些
+    // 用来存放头部View的集合  比Map要高效一些
     private SparseArray<View> mHeaderViewList;
+    // 用来存放底部View的集合  比Map要高效一些
+    private SparseArray<View> mFooterViewList;
     // 基本的头部类型开始位置  用于viewType
     private static int HEADER_KEY = 10000000;
+    private static int FOOTER_KEY = 20000000;
 
     public HeaderViewRecyAdapter(RecyclerView.Adapter mAdapter) {
         this.mAdapter = mAdapter;
         mHeaderViewList = new SparseArray<>();
+        mFooterViewList = new SparseArray<>();
     }
 
     @Override
@@ -33,6 +37,9 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         /*返回headview的key做为type*/
         if (isHeaderPosition(position)) {
             return mHeaderViewList.keyAt(position);
+        }
+        if (isFooterPosition(position)) {
+            return mFooterViewList.keyAt(position - mHeaderViewList.size() - mAdapter.getItemCount());
         }
 
         /*列表adapter的位置要减去头部的个数*/
@@ -47,6 +54,11 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             View headView = mHeaderViewList.get(viewType);
             return createHeaderViewHolder(headView);
         }
+        /*判断是不是头部*/
+        if (isFooterViewType(viewType)) {
+            View footView = mFooterViewList.get(viewType);
+            return createHeaderViewHolder(footView);
+        }
 
         return mAdapter.onCreateViewHolder(parent, viewType);
     }
@@ -59,7 +71,7 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         /*如果是头部，则不需要绑定view，直接返回*/
-        if (isHeaderPosition(position)) {
+        if (isHeaderPosition(position) || isFooterPosition(position)) {
             return;
         }
 
@@ -87,7 +99,7 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         /*总个数为原来的个数加上headerview的个数*/
-        return mAdapter.getItemCount() + mHeaderViewList.size();
+        return mAdapter.getItemCount() + mHeaderViewList.size() + mFooterViewList.size();
     }
 
     /**
@@ -102,7 +114,7 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    boolean isHeaderOrFooter = isHeaderPosition(position);
+                    boolean isHeaderOrFooter = isHeaderPosition(position) || isFooterPosition(position);
                     return isHeaderOrFooter ? layoutManager.getSpanCount() : 1;
                 }
             });
@@ -121,6 +133,17 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     /**
+     * 添加底部View
+     */
+    public void addFooterView(View footerView) {
+        int position = mFooterViewList.indexOfValue(footerView);
+        if (position < 0) {
+            mFooterViewList.put(FOOTER_KEY++, footerView);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
      * 移除头部
      */
     public void removeHeaderView(View view) {
@@ -128,6 +151,24 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (index < 0) return;
         mHeaderViewList.removeAt(index);
         notifyDataSetChanged();
+    }
+
+    /**
+     * 移除底部
+     */
+    public void removeFooterView(View view) {
+        int index = mFooterViewList.indexOfValue(view);
+        if (index < 0) return;
+        mFooterViewList.removeAt(index);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 是不是底部类型
+     */
+    private boolean isFooterViewType(int viewType) {
+        int position = mFooterViewList.indexOfKey(viewType);
+        return position >= 0;
     }
 
     /**
@@ -143,6 +184,13 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     private boolean isHeaderPosition(int position) {
         return position < mHeaderViewList.size();
+    }
+
+    /**
+     * 是不是头部位置
+     */
+    private boolean isFooterPosition(int position) {
+        return position >= mHeaderViewList.size() + mAdapter.getItemCount();
     }
 
     /**

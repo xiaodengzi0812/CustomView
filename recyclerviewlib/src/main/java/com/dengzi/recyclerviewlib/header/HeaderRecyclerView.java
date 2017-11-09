@@ -82,6 +82,20 @@ public class HeaderRecyclerView extends RecyclerView {
         }
     }
 
+    // 添加底部
+    public void addFooterView(View view) {
+        if (mHeaderRecyclerAdapter != null) {
+            mHeaderRecyclerAdapter.addFooterView(view);
+        }
+    }
+
+    // 移除底部
+    public void removeFooterView(View view) {
+        if (mHeaderRecyclerAdapter != null) {
+            mHeaderRecyclerAdapter.removeFooterView(view);
+        }
+    }
+
     /*为了保证两个adapter的数据的一致性，搞一个观察者来时时同步数据*/
     private AdapterDataObserver mDataObserver = new AdapterDataObserver() {
         @Override
