@@ -1,0 +1,10 @@
+<resources>
+    <!--SwipeMenu-->
+    <declare-styleable name="SwipeMenu">
+        <attr name="swipe_direction" format="enum">
+            <enum name="left_to_right" value="1" />
+            <enum name="right_to_left" value="2" />
+        </attr>
+    </declare-styleable>
+
+</resources>
