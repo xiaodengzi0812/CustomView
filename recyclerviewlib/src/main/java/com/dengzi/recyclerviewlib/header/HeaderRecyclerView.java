@@ -40,27 +40,20 @@ public class HeaderRecyclerView extends RecyclerView {
             mAdapter.unregisterAdapterDataObserver(mDataObserver);
             mAdapter = null;
         }
-
         this.mAdapter = adapter;
-
         if (adapter instanceof HeaderViewRecyAdapter) {
             mHeaderRecyclerAdapter = (HeaderViewRecyAdapter) adapter;
         } else {
             mHeaderRecyclerAdapter = new HeaderViewRecyAdapter(adapter);
         }
-
         super.setAdapter(mHeaderRecyclerAdapter);
-
         // 注册一个观察者
         mAdapter.registerAdapterDataObserver(mDataObserver);
-
         // 解决GridLayout添加头部也要占据一行
         mHeaderRecyclerAdapter.adjustSpanSize(this);
-
         if (mItemClickListener != null) {
             mHeaderRecyclerAdapter.setOnItemClickListener(mItemClickListener);
         }
-
         if (mLongClickListener != null) {
             mHeaderRecyclerAdapter.setOnLongClickListener(mLongClickListener);
         }

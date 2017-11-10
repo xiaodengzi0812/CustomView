@@ -57,7 +57,6 @@ public class SwipeRecyclerView extends RecyclerView {
         // move事件的时候，做判断
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
             /*算出刚开始移动的x和y轴的距离*/
-
             float disX = Math.abs(ev.getX() - mStartX);
             float disY = Math.abs(ev.getY() - mStartY);
             if (disX > 2 || disY > 2) {

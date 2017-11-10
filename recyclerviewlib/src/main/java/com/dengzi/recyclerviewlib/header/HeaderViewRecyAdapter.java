@@ -41,7 +41,6 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (isFooterPosition(position)) {
             return mFooterViewList.keyAt(position - mHeaderViewList.size() - mAdapter.getItemCount());
         }
-
         /*列表adapter的位置要减去头部的个数*/
         position = position - mHeaderViewList.size();
         return mAdapter.getItemViewType(position);
@@ -59,7 +58,6 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             View footView = mFooterViewList.get(viewType);
             return createHeaderViewHolder(footView);
         }
-
         return mAdapter.onCreateViewHolder(parent, viewType);
     }
 
@@ -133,6 +131,31 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     /**
+     * 移除头部
+     */
+    public void removeHeaderView(View view) {
+        int index = mHeaderViewList.indexOfValue(view);
+        if (index < 0) return;
+        mHeaderViewList.removeAt(index);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 是不是头部类型
+     */
+    private boolean isHeaderViewType(int viewType) {
+        int position = mHeaderViewList.indexOfKey(viewType);
+        return position >= 0;
+    }
+
+    /**
+     * 是不是头部位置
+     */
+    private boolean isHeaderPosition(int position) {
+        return position < mHeaderViewList.size();
+    }
+
+    /**
      * 添加底部View
      */
     public void addFooterView(View footerView) {
@@ -140,16 +163,6 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (position < 0) {
             mFooterViewList.put(FOOTER_KEY++, footerView);
         }
-        notifyDataSetChanged();
-    }
-
-    /**
-     * 移除头部
-     */
-    public void removeHeaderView(View view) {
-        int index = mHeaderViewList.indexOfValue(view);
-        if (index < 0) return;
-        mHeaderViewList.removeAt(index);
         notifyDataSetChanged();
     }
 
@@ -172,22 +185,7 @@ public class HeaderViewRecyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     /**
-     * 是不是头部类型
-     */
-    private boolean isHeaderViewType(int viewType) {
-        int position = mHeaderViewList.indexOfKey(viewType);
-        return position >= 0;
-    }
-
-    /**
-     * 是不是头部位置
-     */
-    private boolean isHeaderPosition(int position) {
-        return position < mHeaderViewList.size();
-    }
-
-    /**
-     * 是不是头部位置
+     * 是不是底部位置
      */
     private boolean isFooterPosition(int position) {
         return position >= mHeaderViewList.size() + mAdapter.getItemCount();

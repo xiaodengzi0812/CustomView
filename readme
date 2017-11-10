@@ -17,6 +17,10 @@
 15、自定义消息拖拽 -- msgbubble
 16、自定义花束直播点赞效果 -- love
 17、自定义视差引导页 -- parallax
-18、自定义recyclerview -- recyclerviewlib
-19、自定义计步器 -- stepview
-20、自定义文字变色 -- trackcolor
+18、自定义计步器 -- stepview
+19、自定义文字变色 -- trackcolor
+20、自定义recyclerview(通用Adapter封装) -- recyclerviewlib
+21、自定义recyclerview(添加头部和底部) -- recyclerviewlib
+22、自定义recyclerview(下拉刷新) -- recyclerviewlib
+23、自定义recyclerview(分割线聚合) -- recyclerviewlib
+24、自定义recyclerview(侧滑删除) -- recyclerviewlib
