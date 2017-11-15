@@ -2,14 +2,18 @@ package com.dengzi.customview.recviewtest;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import com.dengzi.customview.R;
 import com.dengzi.recyclerviewlib.adapter.RecyBaseAdapter;
 import com.dengzi.recyclerviewlib.adapter.RecyBaseViewHolder;
+import com.dengzi.recyclerviewlib.refresh.DefaultRefreshCreator;
+import com.dengzi.recyclerviewlib.refresh.RefreshRecyclerView;
 import com.dengzi.recyclerviewlib.swipe.SwipeRecyclerView;
 
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ public class RecySwipeActivity extends AppCompatActivity {
     private MyAdapter mAdapter;
     private List<String> mDataList = new ArrayList<>();
 
+    private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +38,36 @@ public class RecySwipeActivity extends AppCompatActivity {
         mSwipRv = (SwipeRecyclerView) findViewById(R.id.swip_rv);
         mSwipRv.setLayoutManager(new LinearLayoutManager(this));
         initData();
+        initRefresh();
+    }
+
+    private void initRefresh() {
+        mSwipRv.addRefreshCreator(new DefaultRefreshCreator());
+        mSwipRv.addPullCreator(new DefaultRefreshCreator());
+        mSwipRv.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
+            @Override
+            public void onPullRefresh() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipRv.stopRefresh();
+                    }
+                }, 2000);
+            }
+        });
+
+        // 上拉加载的监听
+        mSwipRv.setOnPullLoadMoreListener(new RefreshRecyclerView.OnPullLoadMoreListener() {
+            @Override
+            public void onPullLoadMore() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipRv.stopPull();
+                    }
+                }, 2000);
+            }
+        });
     }
 
     private void initData() {

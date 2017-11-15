@@ -7,13 +7,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.dengzi.recyclerviewlib.refresh.RefreshRecyclerView;
+
 /**
  * @author Djk
  * @Title: 侧滑 RecyclerView
  * @Time: 2017/11/8.
  * @Version:1.0.0
  */
-public class SwipeRecyclerView extends RecyclerView {
+public class SwipeRecyclerView extends RefreshRecyclerView {
     // 当前touch的view
     private SwipeMenuLayout mTouchView;
     //事件起始的x、y坐标

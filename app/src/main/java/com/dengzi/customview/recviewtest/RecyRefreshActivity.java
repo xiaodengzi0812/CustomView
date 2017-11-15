@@ -45,13 +45,28 @@ public class RecyRefreshActivity extends AppCompatActivity {
 
     private void initRefresh() {
         mRecyclerView.addRefreshCreator(new DefaultRefreshCreator());
+        mRecyclerView.addPullCreator(new DefaultRefreshCreator());
         mRecyclerView.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onPullRefresh() {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mRecyclerView.stopRefresh();
+                    }
+                }, 2000);
+            }
+        });
+
+        // 上拉加载的监听
+        mRecyclerView.setOnPullLoadMoreListener(new RefreshRecyclerView.OnPullLoadMoreListener() {
+            @Override
+            public void onPullLoadMore() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerView.stopPull();
+                        mRecyclerView.setPullLoadMoreEnable(false);
                     }
                 }, 2000);
             }
@@ -74,7 +89,7 @@ public class RecyRefreshActivity extends AppCompatActivity {
     }
 
     protected void initData() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             mItems.add(new ItemBean(i * 8 + 0, "收款", R.drawable.takeout_ic_category_brand));
             mItems.add(new ItemBean(i * 8 + 1, "转账", R.drawable.takeout_ic_category_flower));
             mItems.add(new ItemBean(i * 8 + 2, "余额宝", R.drawable.takeout_ic_category_fruit));
