@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -53,8 +54,14 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     private OnRefreshListener mRefreshListener;
     // 上拉加载回调监听
     private OnPullLoadMoreListener mPullLoadMorehListener;
+    // 自动加载回调监听
+    private OnAtuoLoadMoreListener mAutoLoadMorehListener;
     // 上拉加载是否可用
     private boolean mIsPullLoadMoreEnable = true;
+    // 自动加载是否可用
+    private boolean mIsAutoLoadMoreEnable = true;
+    // 是否正在自动加载
+    private boolean mIsAutoLoading = false;
 
     public RefreshRecyclerView(Context context) {
         super(context);
@@ -246,6 +253,7 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
+                bottomAutoLoad();
                 // 下拉刷新
                 // 获取手指触摸拖拽的距离
                 int distanceY = (int) ((e.getRawY() - mFingerDownY) * mDragIndex);
@@ -362,9 +370,9 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     }
 
     /**
-     * 停止刷新
+     * 下拉刷新成功
      */
-    public void stopRefresh() {
+    public void refreshFinish() {
         //当前状态恢复为默认
         mCurrentRefreshStatus = REFRESH_STATUS_NORMAL;
         //将refreshView恢复为默认
@@ -376,9 +384,9 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     }
 
     /**
-     * 停止上拉加载
+     * 上拉加载成功
      */
-    public void stopPull() {
+    public void pullLoadMoreFinish() {
         //当前状态恢复为默认
         mCurrentPullStatus = REFRESH_STATUS_NORMAL;
         //将refreshView恢复为默认
@@ -390,12 +398,28 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     }
 
     /**
+     * 自动加载成功
+     */
+    public void autoLoadMoreFinish() {
+        mIsAutoLoading = false;
+    }
+
+    /**
      * 上拉加载是否可以使用
      *
      * @param enable 是否可用
      */
     public void setPullLoadMoreEnable(boolean enable) {
         this.mIsPullLoadMoreEnable = enable;
+    }
+
+    /**
+     * 自动加载是否可以使用
+     *
+     * @param enable 是否可用
+     */
+    public void setAutoLoadMoreEnable(boolean enable) {
+        this.mIsAutoLoadMoreEnable = enable;
     }
 
     /**
@@ -417,6 +441,15 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     }
 
     /**
+     * 设置自动加载监听
+     *
+     * @param listener 监听事件
+     */
+    public void setOnAtuoLoadMoreListener(OnAtuoLoadMoreListener listener) {
+        this.mAutoLoadMorehListener = listener;
+    }
+
+    /**
      * 下拉刷新监听
      */
     public interface OnRefreshListener {
@@ -430,6 +463,50 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     public interface OnPullLoadMoreListener {
         // 上拉加载
         void onPullLoadMore();
+    }
+
+    /**
+     * 自动加载监听
+     */
+    public interface OnAtuoLoadMoreListener {
+        // 自动加载
+        void onAutoLoadMore();
+    }
+
+    /**
+     * 底部自动加载
+     */
+    public void bottomAutoLoad() {
+        // 自动加载可用 && 监听事件不为null && 滑动到了底部
+        if (mIsAutoLoadMoreEnable && mAutoLoadMorehListener != null && isScrollToBottom()) {
+            if (!mIsAutoLoading) {
+                synchronized (this) {
+                    if (!mIsAutoLoading) {
+                        mIsAutoLoading = true;
+                        mAutoLoadMorehListener.onAutoLoadMore();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 是否滑动到了底部
+     *
+     * @return true:到了底部   fase:没到底部
+     */
+    public boolean isScrollToBottom() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
+        //屏幕中最后一个可见子项的position
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        //当前屏幕所看到的子项个数
+        int visibleItemCount = layoutManager.getChildCount();
+        //当前RecyclerView的所有子项个数
+        int totalItemCount = layoutManager.getItemCount();
+        //RecyclerView的滑动状态
+        int state = getScrollState();
+        // 当总条目的倒数第8个开始就向客户端发送加载请求
+        return visibleItemCount > 0 && lastVisibleItemPosition > totalItemCount - 8 && state == SCROLL_STATE_IDLE;
     }
 
 }

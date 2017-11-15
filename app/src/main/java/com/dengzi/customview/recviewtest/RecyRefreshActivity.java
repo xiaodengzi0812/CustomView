@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,13 +47,14 @@ public class RecyRefreshActivity extends AppCompatActivity {
     private void initRefresh() {
         mRecyclerView.addRefreshCreator(new DefaultRefreshCreator());
         mRecyclerView.addPullCreator(new DefaultRefreshCreator());
+        // 下拉刷新的监听
         mRecyclerView.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
             @Override
             public void onPullRefresh() {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.stopRefresh();
+                        mRecyclerView.refreshFinish();
                     }
                 }, 2000);
             }
@@ -65,10 +67,24 @@ public class RecyRefreshActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.stopPull();
+                        mRecyclerView.pullLoadMoreFinish();
                         mRecyclerView.setPullLoadMoreEnable(false);
                     }
                 }, 2000);
+            }
+        });
+
+        // 自动加载监听,如果不要则不添加此监听方法即可
+        mRecyclerView.setOnAtuoLoadMoreListener(new RefreshRecyclerView.OnAtuoLoadMoreListener() {
+            @Override
+            public void onAutoLoadMore() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerView.autoLoadMoreFinish();
+                        mRecyclerView.setAutoLoadMoreEnable(false);
+                    }
+                }, 1500);
             }
         });
 
