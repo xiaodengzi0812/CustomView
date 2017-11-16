@@ -1,5 +1,7 @@
 package com.dengzi.recyclerviewlib.refresh;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -17,7 +19,7 @@ import com.dengzi.recyclerviewlib.header.HeaderRecyclerView;
 
 /**
  * @author Djk
- * @Title: 下拉刷新、上拉加载的RecyclerView
+ * @Title: 下拉刷新上拉加载/添加头部和底部的RecyclerView
  * @Time: 2017/9/21.
  * @Version:1.0.0
  */
@@ -31,9 +33,11 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     // 手指按下的Y位置
     private int mFingerDownY;
     // 手指拖拽的阻力指数
-    protected float mDragIndex = 0.35f;
-    // 当前是否正在拖动
-    private boolean mCurrentDrag = false;
+    protected float mDragIndex = 1f;
+    // 下拉刷新是否正在拖动
+    private boolean mRefreshCurrentDrag = false;
+    // 上拉加载是否正在拖动
+    private boolean mPullCurrentDrag = false;
     // 当前下拉刷新、上拉加载的状态
     private int mCurrentRefreshStatus, mCurrentPullStatus;
     // 默认状态
@@ -114,8 +118,8 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
                         // 获取头部刷新View的高度
                         mRefreshViewHeight = mRefreshView.getMeasuredHeight();
                         if (mRefreshViewHeight > 0) {
-                            // 隐藏头部刷新的View  marginTop  多留出1px防止无法判断是不是滚动到头部问题
-                            setRefreshViewMarginTop(-mRefreshViewHeight - 1);
+                            // 隐藏头部刷新的View  marginTop
+                            setRefreshViewMarginTop(-mRefreshViewHeight);
                         }
                     }
                 });
@@ -142,7 +146,7 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
                         mPullViewHeight = mPullView.getMeasuredHeight();
                         if (mPullViewHeight > 0) {
                             // 隐藏底部加载的View  marginBottom  多留出1px防止无法判断是不是滚动到底部问题
-                            setPullViewMarginBottom(-mPullViewHeight - 1);
+                            setPullViewMarginBottom(-mPullViewHeight);
                             removeHeaderView(mPullView);
                         }
                     }
@@ -157,16 +161,15 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
             case MotionEvent.ACTION_DOWN:
                 // 记录手指按下的位置 ,之所以写在dispatchTouchEvent那是因为如果我们处理了条目点击事件，
                 // 那么就不会进入onTouchEvent里面，所以只能在这里获取
-                mFingerDownY = (int) ev.getRawY();
+                mFingerDownY = (int) ev.getY();
                 break;
             case MotionEvent.ACTION_UP:
-                if (mCurrentDrag) {
-                    // 如果当前是上拉加载，则去取消上拉加载的状态
-                    if (mCurrentType == CURRENT_PULL) {
-                        restorePullView();
-                    } else if (mCurrentType == CURRENT_REFRESH) {// 如果当前是下拉刷新，则去取消下拉刷新的状态
-                        restoreRefreshView();
-                    }
+                // 如果当前是上拉加载，则去取消上拉加载的状态
+                float currentMargin = Math.abs(ev.getRawY() - mFingerDownY) * mDragIndex - mRefreshViewHeight;
+                if (mCurrentType == CURRENT_PULL && mPullCurrentDrag) {
+                    restorePullView((int) currentMargin);
+                } else if (mCurrentType == CURRENT_REFRESH && mRefreshCurrentDrag) {// 如果当前是下拉刷新，则去取消下拉刷新的状态
+                    restoreRefreshView((int) currentMargin);
                 }
                 break;
         }
@@ -176,11 +179,13 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     /**
      * 更新刷新view的显示状态
      */
-    private void restoreRefreshView() {
-        //获取当前的margin值
-        int currentTopMargin = ((ViewGroup.MarginLayoutParams) mRefreshView.getLayoutParams()).topMargin;
+    private void restoreRefreshView(int currentTopMargin) {
         //设置最终的margin值，默认是回到默认值
         int finalTopMargin = -mRefreshViewHeight + 1;
+        if (mCurrentRefreshStatus == REFRESH_STATUS_NORMAL) {
+            setRefreshViewMarginTop(finalTopMargin);
+            return;
+        }
         //如果当前状态是松开刷新状态，说明下拉超过刷新view的高度
         if (mCurrentRefreshStatus == REFRESH_STATUS_LOOSEN_REFRESHING) {
             //这里就将下拉刷新view显示出来
@@ -197,8 +202,10 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
         }
         //这个地方就是根据下拉的高度来决定动画时间，其实不要也没关系
         int distance = currentTopMargin - finalTopMargin;
+        distance = distance < 0 ? 0 : distance;
         //从现在的位置回弹到指定位置，开启一个动画
         ValueAnimator animator = ObjectAnimator.ofFloat(currentTopMargin, finalTopMargin).setDuration(distance);
+        // 添加执行动画
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -206,19 +213,31 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
                 setRefreshViewMarginTop((int) currentTopMargin);
             }
         });
+        // 动画结束后
+        final int finalTopMargin1 = finalTopMargin;
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (finalTopMargin1 != 0) {
+                    mCurrentRefreshStatus = REFRESH_STATUS_NORMAL;
+                }
+            }
+        });
         animator.start();
         //将是否正在拖动设置为false
-        mCurrentDrag = false;
+        mRefreshCurrentDrag = false;
     }
 
     /**
      * 更新刷新view的显示状态
      */
-    private void restorePullView() {
-        //获取当前的margin值
-        int currentBottomMargin = ((ViewGroup.MarginLayoutParams) mPullView.getLayoutParams()).bottomMargin;
+    private void restorePullView(int currentBottomMargin) {
         //设置最终的margin值，默认是回到默认值
-        int finalBottomMargin = -mPullViewHeight - 1;
+        int finalBottomMargin = -mPullViewHeight + 1;
+        if (mCurrentPullStatus == REFRESH_STATUS_NORMAL) {
+            setPullViewMarginBottom(finalBottomMargin);
+            return;
+        }
         //如果当前状态是松开刷新状态，说明上拉超过刷新view的高度
         if (mCurrentPullStatus == REFRESH_STATUS_LOOSEN_REFRESHING) {
             //这里就将上拉view显示出来
@@ -235,6 +254,7 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
         }
         //这个地方就是根据下拉的高度来决定动画时间，其实不要也没关系
         int distance = currentBottomMargin - finalBottomMargin;
+        distance = distance < 0 ? 0 : distance;
         //从现在的位置回弹到指定位置，开启一个动画
         ValueAnimator animator = ObjectAnimator.ofFloat(currentBottomMargin, finalBottomMargin).setDuration(distance);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -244,9 +264,19 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
                 setPullViewMarginBottom((int) currentTopMargin);
             }
         });
+        // 动画结束后
+        final int finalBottomMargin1 = finalBottomMargin;
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (finalBottomMargin1 != 0) {
+                    mCurrentPullStatus = REFRESH_STATUS_NORMAL;
+                }
+            }
+        });
         animator.start();
         //将是否正在拖动设置为false
-        mCurrentDrag = false;
+        mPullCurrentDrag = false;
     }
 
     @Override
@@ -256,27 +286,37 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
                 bottomAutoLoad();
                 // 下拉刷新
                 // 获取手指触摸拖拽的距离
-                int distanceY = (int) ((e.getRawY() - mFingerDownY) * mDragIndex);
+                float distanceY = (e.getY() - mFingerDownY) * mDragIndex;
+                if (mRefreshCurrentDrag) {
+                    updateRefreshStatus(distanceY);
+                }
                 if (!canChildScrollUp() && mRefreshView != null && mRefreshCreator != null && mCurrentRefreshStatus != REFRESH_STATUS_REFRESHING) {
                     // 如果是已经到达头部，并且不断的向下拉，那么不断的改变refreshView的marginTop的值
                     if (distanceY > 0) {
-                        mCurrentType = CURRENT_REFRESH;
-                        int marginTop = distanceY - mRefreshViewHeight;
+                        int marginTop = (int) (distanceY - mRefreshViewHeight);
                         setRefreshViewMarginTop(marginTop);
-                        updateRefreshStatus(distanceY);
-                        mCurrentDrag = true;
+                        if (!mRefreshCurrentDrag) {
+                            mCurrentType = CURRENT_REFRESH;
+                            mRefreshCurrentDrag = true;
+                            updateRefreshStatus(distanceY);
+                        }
                         return false;
                     }
                 }
                 // 上拉加载
+                if (mPullCurrentDrag) {
+                    updatePullStatus(distanceY);
+                }
                 if (!canChildScrollDown() && mPullView != null && mPullCreator != null && mCurrentPullStatus != REFRESH_STATUS_REFRESHING && mIsPullLoadMoreEnable) {
                     // 如果是已经到达头部，并且不断的向下拉，那么不断的改变refreshView的marginTop的值
                     if (distanceY < 0) {
-                        mCurrentType = CURRENT_PULL;
-                        int marginBottom = Math.abs(distanceY) - mPullViewHeight;
+                        int marginBottom = (int) (Math.abs(distanceY) - mPullViewHeight);
                         setPullViewMarginBottom(marginBottom);
-                        updatePullStatus(distanceY);
-                        mCurrentDrag = true;
+                        if (!mPullCurrentDrag) {
+                            mCurrentType = CURRENT_PULL;
+                            mPullCurrentDrag = true;
+                            updatePullStatus(distanceY);
+                        }
                         return false;
                     }
                 }
@@ -288,10 +328,10 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     /**
      * 通过下拉的距离更新刷新状态
      */
-    private void updateRefreshStatus(int distanceY) {
+    private void updateRefreshStatus(float distanceY) {
         if (distanceY <= 0) {
             mCurrentRefreshStatus = REFRESH_STATUS_NORMAL;
-        } else if (distanceY < mRefreshViewHeight) {//下拉高度没超过刷新view的高度，这个时候是下拉刷新状态
+        } else if (distanceY < mRefreshViewHeight + 20) {//下拉高度没超过刷新view的高度，这个时候是下拉刷新状态
             mCurrentRefreshStatus = REFRESH_STATUS_PULL_DOWN_REFRESH;
         } else {//下拉高度超过刷新view的高度，这个时候是松开刷新状态
             mCurrentRefreshStatus = REFRESH_STATUS_LOOSEN_REFRESHING;
@@ -305,10 +345,10 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
     /**
      * 通过上拉的距离更新刷新状态
      */
-    private void updatePullStatus(int distanceY) {
+    private void updatePullStatus(float distanceY) {
         if (distanceY >= 0) {
             mCurrentPullStatus = REFRESH_STATUS_NORMAL;
-        } else if (Math.abs(distanceY) < mRefreshViewHeight) {//下拉高度没超过刷新view的高度，这个时候是下拉刷新状态
+        } else if (Math.abs(distanceY) < mRefreshViewHeight + 20) {//下拉高度没超过刷新view的高度，这个时候是下拉刷新状态
             mCurrentPullStatus = REFRESH_STATUS_PULL_DOWN_REFRESH;
         } else {//下拉高度超过刷新view的高度，这个时候是松开刷新状态
             mCurrentPullStatus = REFRESH_STATUS_LOOSEN_REFRESHING;
@@ -373,10 +413,8 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
      * 下拉刷新成功
      */
     public void refreshFinish() {
-        //当前状态恢复为默认
-        mCurrentRefreshStatus = REFRESH_STATUS_NORMAL;
         //将refreshView恢复为默认
-        restoreRefreshView();
+        restoreRefreshView(0);
         //回调停止刷新方法去处理
         if (mRefreshCreator != null) {
             mRefreshCreator.onStopRefresh();
@@ -387,10 +425,8 @@ public class RefreshRecyclerView extends HeaderRecyclerView {
      * 上拉加载成功
      */
     public void pullLoadMoreFinish() {
-        //当前状态恢复为默认
-        mCurrentPullStatus = REFRESH_STATUS_NORMAL;
         //将refreshView恢复为默认
-        restorePullView();
+        restorePullView(0);
         //回调停止刷新方法去处理
         if (mPullCreator != null) {
             mPullCreator.onStopRefresh();

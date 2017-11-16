@@ -50,7 +50,7 @@ public class RecySwipeActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mSwipRv.stopRefresh();
+                        mSwipRv.refreshFinish();
                     }
                 }, 2000);
             }
@@ -63,7 +63,7 @@ public class RecySwipeActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mSwipRv.stopPull();
+                        mSwipRv.pullLoadMoreFinish();
                     }
                 }, 2000);
             }

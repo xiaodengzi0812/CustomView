@@ -4,10 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 /**
  * @author Djk
- * @Title: 下拉刷新的辅助类为了匹配所有效果
+ * @Title: 下拉、上拉刷新的辅助类为了匹配所有效果
  * @Time: 2017/9/21.
  * @Version:1.0.0
  */
@@ -22,13 +21,13 @@ public abstract class RefreshCreator {
     public abstract View getRefreshView(Context context, ViewGroup parent);
 
     /**
-     * 正在下拉
+     * 正在下拉或上拉
      *
      * @param currentDragHeight    当前拖动的高度
      * @param refreshViewHeight    总的刷新高度
      * @param currentRefreshStatus 当前状态
      */
-    public abstract void onPull(int currentDragHeight, int refreshViewHeight, int currentRefreshStatus);
+    public abstract void onPull(float currentDragHeight, int refreshViewHeight, int currentRefreshStatus);
 
     /**
      * 正在刷新中

@@ -27,8 +27,8 @@ public class DefaultRefreshCreator extends RefreshCreator {
     }
 
     @Override
-    public void onPull(int currentDragHeight, int refreshViewHeight, int currentRefreshStatus) {
-        float rotate = ((float) currentDragHeight) / refreshViewHeight;
+    public void onPull(float currentDragHeight, int refreshViewHeight, int currentRefreshStatus) {
+        float rotate = (currentDragHeight) / refreshViewHeight;
         // 不断下拉的过程中旋转图片
         mRefreshIv.setRotation(rotate * 360);
     }
